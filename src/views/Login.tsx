@@ -3,13 +3,23 @@ import React,{useState} from "react";
 import NavigationProps from "../shared/types/NavigationProp";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../hooks/useAuth";
+import { GoogleAuthProvider,signInWithRedirect } from "firebase/auth";
 
 
 export default function Login({navigation} : NavigationProps){
     const [email,setEmail] = useState<string>();
     const [password,setPassword] = useState<string>();
     const [fail,setFaile] = useState(null);
+    const provider = new GoogleAuthProvider();
+    provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+    auth.useDeviceLanguage();
+    provider.setCustomParameters({
+        'login_hint': 'user@example.com'
+      });
 
+    const google =()=>{
+        signInWithRedirect(auth, provider);
+    }
     const login = ()=>{
         signInWithEmailAndPassword(auth, email, password)
             .catch((error) => {
@@ -34,6 +44,9 @@ export default function Login({navigation} : NavigationProps){
                 <TouchableOpacity style={styles.signUpContainer}>
                     <Text>No Account? </Text>
                     <Text style={styles.signUp} onPress={()=>{navigation.navigate("Register")}}>Register</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={google}>
+                    <Text>With Google</Text>
                 </TouchableOpacity>
                 <Text style={{color:"red"}}>{(fail==null)?null:fail}</Text>
             </View>

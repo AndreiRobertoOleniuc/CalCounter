@@ -1,12 +1,10 @@
-import { Text, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { useAuth } from './src/hooks/useAuth';
 
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Login from './src/views/Login';
 import Register from './src/views/Register';
-import NavigationProps from './src/shared/types/NavigationProp';
 
 const Stack = createNativeStackNavigator();
 
@@ -29,20 +27,7 @@ export default function App() {
   }else{
     return (
       <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen name="Home" options={{ headerShown: false }}>
-            {(props) => <HomeScreen {...props} />}
-          </Stack.Screen>
-        </Stack.Navigator>
       </NavigationContainer>
     );
   }
-}
-
-function HomeScreen({navigation}: NavigationProps) {
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Home Screen</Text>
-    </View>
-  );
 }
