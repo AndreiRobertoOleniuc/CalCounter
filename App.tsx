@@ -7,35 +7,23 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Login from './src/views/Login';
 import Register from './src/views/Register';
+import NavigationProps from './src/shared/types/NavigationProp';
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   const { user } = useAuth();
-
-  const createUser = () => {
-    createUserWithEmailAndPassword(auth, "andreioleniucroberto@gmail.com", "123456")
-    .then((userCredential) => {
-      // Signed in 
-      const user = userCredential.user;
-      console.log(user);
-      // ...
-    })
-    .catch((error) => { 
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      console.log(errorCode);
-      console.log(errorMessage);
-    }
-    );
-  }
   
   if(!user){
     return (
       <NavigationContainer>
         <Stack.Navigator>
-          <Stack.Screen name="Login"  component={Login} options={{ headerShown: false }}/>
-          <Stack.Screen name="Register" component={Register} options={{ headerShown: false }}/>
+          <Stack.Screen name="Login" options={{ headerShown: false }}>
+            {(props) => <Login {...props} />}
+          </Stack.Screen>
+          <Stack.Screen name="Register" options={{ headerShown: false }}>
+            {(props) => <Register {...props} />}
+          </Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer>
     )
@@ -43,14 +31,16 @@ export default function App() {
     return (
       <NavigationContainer>
         <Stack.Navigator>
-          <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }}/>
+          <Stack.Screen name="Home" options={{ headerShown: false }}>
+            {(props) => <HomeScreen {...props} />}
+          </Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer>
     );
   }
 }
 
-function HomeScreen() {
+function HomeScreen({navigation}: NavigationProps) {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Text>Home Screen</Text>

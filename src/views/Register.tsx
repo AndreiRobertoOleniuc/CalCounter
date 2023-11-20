@@ -1,20 +1,27 @@
 import React,{useState} from "react";
 import { StyleSheet, Text, View,TextInput,TouchableOpacity } from "react-native";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { useNavigation } from '@react-navigation/native';
+import NavigationProps from "../shared/types/NavigationProp"; 
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../hooks/useAuth";
 
-export default function Register(){
-    const navigation = useNavigation();
+export default function Register({navigation} : NavigationProps){
 
-    const [email,setEmail] = useState();
-    const [password,setPassword] = useState();
+    const [email,setEmail] = useState<string>();
+    const [password,setPassword] = useState<string>();
 
     const [fail,setFaile] = useState(null);
-    const register = ()=>{
-        
-    }
 
-    const goToLogin = ()=>{
+    const register = () => {
+        if(email == null || password == null) {
+            setFaile("Please enter a valid email and password");
+        } else {
+            createUserWithEmailAndPassword(auth, email, password)
+            .catch((error) => {
+                const errorMessage = error.message;
+                setFaile(errorMessage);
+            });
+        }
     }
     return(
         <KeyboardAwareScrollView contentContainerStyle={styles.container} bounces={false}>
@@ -24,9 +31,9 @@ export default function Register(){
             <View>
                 <Text style={styles.greet}>Register your Account</Text>
                 <Text style={styles.describe}>Email</Text>
-                <TextInput placeholder="Email" style={styles.input}/>
+                <TextInput placeholder="Email" style={styles.input} onChangeText={(value)=>{setEmail(value)}}/>
                 <Text style={styles.describe}>Password</Text>
-                <TextInput placeholder="Passwort" style={styles.input} secureTextEntry={true}/>  
+                <TextInput placeholder="Passwort" style={styles.input} secureTextEntry={true} onChangeText={(value)=>{setPassword(value)}}/>  
             </View>
             <View style={styles.btnContainer}>
                 <TouchableOpacity style={styles.register} onPress={register}>
@@ -34,7 +41,7 @@ export default function Register(){
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.loginContainer}>
                     <Text>Do you already have an account? </Text>
-                    <Text style={styles.login}>go to Login</Text>
+                    <Text style={styles.login} onPress={()=>{navigation.goBack()}}>go to Login</Text>
                 </TouchableOpacity>
                 <Text style={{color:"red"}}>{(fail==null)?null:fail}</Text>
             </View>
@@ -55,7 +62,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 30,
         marginTop:100,
-        marginBottom:50,
+        marginBottom:100,
     },
     input:{
         height:40,
@@ -69,7 +76,8 @@ const styles = StyleSheet.create({
         margin:5,
         opacity:0.5,
         fontSize:20,
-        marginBottom:30,
+        marginBottom:50,
+        alignSelf:"center"
     },
     register:{
         borderRadius:20,
@@ -93,7 +101,7 @@ const styles = StyleSheet.create({
         flexDirection:"row",
     },
     login:{
-        color:"grey",
+        color:"blue",
     },
     describe:{
         margin:5,
