@@ -1,7 +1,6 @@
-import { Button, StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 
-import { useAuth, auth } from './src/hooks/useAuth';
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { useAuth } from './src/hooks/useAuth';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
