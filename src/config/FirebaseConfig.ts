@@ -13,6 +13,13 @@ export default function app(
   messagingSenderId: string,
   appId: string
 ) {
+  apikey = apikey.slice(0, -1);
+  authDomain = authDomain.slice(0, -1);
+  projectId = projectId.slice(0, -1);
+  storageBucket = storageBucket.slice(0, -1);
+  messagingSenderId = messagingSenderId.slice(0, -1);
+  appId = appId.slice(0, -1);
+
   const firebaseConfig2 = {
     apiKey: apikey,
     authDomain: authDomain,

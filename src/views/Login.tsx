@@ -1,12 +1,21 @@
 import { StyleSheet, Text, View,TextInput,TouchableOpacity } from "react-native";
 import React,{useState} from "react";
 import NavigationProps from "../shared/types/NavigationProp";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../hooks/useAuth";
+
 
 export default function Login({navigation} : NavigationProps){
-    const [email,setEmail] = useState();
-    const [password,setPassword] = useState();
+    const [email,setEmail] = useState<string>();
+    const [password,setPassword] = useState<string>();
+    const [fail,setFaile] = useState(null);
 
     const login = ()=>{
+        signInWithEmailAndPassword(auth, email, password)
+            .catch((error) => {
+                const errorMessage = error.message;
+                setFaile(errorMessage);
+            });
     }
     return(
         <View style={styles.container}>
@@ -15,18 +24,18 @@ export default function Login({navigation} : NavigationProps){
             </View>
             <View>
                 <Text style={styles.greet}>Welcome</Text>
-                <TextInput placeholder="Email" style={styles.input}/>
-                <TextInput placeholder="Passwort" style={styles.input} secureTextEntry={true}/>  
+                <TextInput placeholder="Email" style={styles.input} onChangeText={(value)=>{setEmail(value)}}/>
+                <TextInput placeholder="Passwort" style={styles.input} secureTextEntry={true} onChangeText={(value)=>{setPassword(value)}}/>  
             </View>
             <View style={styles.btnContainer}>
-                <TouchableOpacity style={styles.login} >
+                <TouchableOpacity style={styles.login} onPress={login}>
                     <Text style={styles.whiteText}>Login</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.signUpContainer}>
                     <Text>No Account? </Text>
                     <Text style={styles.signUp} onPress={()=>{navigation.navigate("Register")}}>Register</Text>
                 </TouchableOpacity>
-                <Text style={{color:"red"}}></Text>
+                <Text style={{color:"red"}}>{(fail==null)?null:fail}</Text>
             </View>
         </View>
     )
