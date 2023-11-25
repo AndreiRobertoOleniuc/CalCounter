@@ -3,7 +3,7 @@ import { StyleSheet, Text, View,TextInput,TouchableOpacity } from "react-native"
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import NavigationProps from "../shared/types/NavigationProp"; 
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../hooks/useAuth";
+import { auth } from "../../firebaseConfig";
 
 export default function Register({navigation} : NavigationProps){
 

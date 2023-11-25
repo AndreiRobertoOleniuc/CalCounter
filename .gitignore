@@ -36,3 +36,4 @@ yarn-error.*
 
 //Ignore Env File
 .env
+firebaseConfig.js
