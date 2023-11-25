@@ -1,7 +1,7 @@
 import React,{useState} from "react";
 import { StyleSheet, Text, View,TextInput,TouchableOpacity } from "react-native";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import NavigationProps from "../shared/types/NavigationProp"; 
+import NavigationProps from "../shared/models/NavigationProp"; 
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebaseConfig";
 

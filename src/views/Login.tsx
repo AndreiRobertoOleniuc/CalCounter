@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View,TextInput,TouchableOpacity } from "react-native";
 import React,{useState} from "react";
-import NavigationProps from "../shared/types/NavigationProp";
+import NavigationProps from "../shared/models/NavigationProp";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebaseConfig";
 
