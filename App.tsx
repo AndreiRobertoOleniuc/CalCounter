@@ -5,13 +5,14 @@ import { useAuth } from './src/hooks/useAuth';
 
 import Login from './src/views/Login';
 import Register from './src/views/Register';
-import { View, Text } from 'react-native';
+import Scanner from './src/views/Scanner';
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   const { user } = useAuth();
   
+  return <Scanner />
   if(!user){
     return (
       <NavigationContainer>
@@ -29,17 +30,9 @@ export default function App() {
     return (
       <NavigationContainer>
         <Stack.Navigator>
-          <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }}/>
+          <Stack.Screen name="Home" component={Scanner} options={{ headerShown: false }}/>
         </Stack.Navigator>
       </NavigationContainer>
     );
   }
-}
-
-function HomeScreen() {
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>You are logged in</Text>
-    </View>
-  );
 }
