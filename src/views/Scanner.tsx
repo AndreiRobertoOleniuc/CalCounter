@@ -37,8 +37,11 @@ export default function Scanner() {
   const handleBarCodeScanned = ({ data }) => {
     setProduct(data);
     console.log(data);
-    axios.get(`https://world.openfoodfacts.net/api/v2/product/${data}`).then((response) => {
+    axios.get(`https://world.openfoodfacts.net/api/v2/product/${data}?fields=product_name,nutriscore_data,brands,image_front_url,nutriments`).then((response) => {
+        console.log(response.data.product.brands);    
         console.log(response.data.product.product_name);
+        console.log(response.data.product.nutriments["energy-kcal_100g"]);
+        console.log(response.data.product.nutriscore_data.grade);
       });
   };
 
