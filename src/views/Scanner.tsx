@@ -65,23 +65,20 @@ export default function Scanner() {
   if (hasPermission === false) {
     return (
       <View style={styles.container}>
-        <Text style={styles.paragraph}>Camera permission not granted</Text>
+        <Text>Camera permission not granted</Text>
       </View>
     );
   }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Scan a Barcode to add Food</Text>
-      <Text style={styles.paragraph}>Focus on the Barcode</Text>
-      {renderCamera()}
-      <TouchableOpacity
-        style={styles.button2}
-        onPress={() => resetScan()}
-      >
-        <Text style={styles.buttonText}>Reset Scan</Text>
-      </TouchableOpacity>
-      <Text style={styles.paragraph}>{product}</Text>
+        <View style={styles.header}>
+            <Text style={styles.headerText}>Scan a Barcode to add Food</Text>
+        </View>
+        {renderCamera()}
+        <View style={styles.manualCodeContainer}>
+            <Text style={styles.manualCodeText}>Enter a barcode manually</Text>
+        </View>
     </View>
   );
 }
@@ -89,44 +86,36 @@ export default function Scanner() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
+  header:{
+    flex:1,
+    alignItems:"center",
+    paddingTop:30,
+    justifyContent:"center",
+    backgroundColor:"#2B354C",
   },
-  paragraph: {
-    fontSize: 16,
-    marginBottom: 40,
+  headerText:{
+    color:"#FAF9F6",
+    fontSize:18,
+  },
+  manualCodeText:{
+    color:"#FAF9F6",
+    fontSize:13,
+  },
+  manualCodeContainer:{
+    flex:1,
+    alignItems:"center",
+    justifyContent:"center",
+    height:30,
+    backgroundColor:"#2B354C",
   },
   cameraContainer: {
-    width: '80%',
+    width: '100%',
+    height: '80%',
     aspectRatio: 1,
     overflow: 'hidden',
-    borderRadius: 10,
-    marginBottom: 40,
   },
   camera: {
     flex: 1,
-  },
-  button: {
-    backgroundColor: 'blue',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 5,
-  },
-  button2: {
-    backgroundColor: 'blue',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 5,
-    marginTop: 20,
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
   },
 });
