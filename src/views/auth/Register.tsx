@@ -1,43 +1,51 @@
-import { StyleSheet, Text, View,TextInput,TouchableOpacity } from "react-native";
 import React,{useState} from "react";
-import NavigationProps from "../shared/models/NavigationProp";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../firebaseConfig";
+import { StyleSheet, Text, View,TextInput,TouchableOpacity } from "react-native";
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import NavigationProps from "../../shared/models/NavigationProp"; 
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../../firebaseConfig";
 
+export default function Register({navigation} : NavigationProps){
 
-export default function Login({navigation} : NavigationProps){
     const [email,setEmail] = useState<string>();
     const [password,setPassword] = useState<string>();
+
     const [fail,setFaile] = useState(null);
 
-    const login = ()=>{
-        signInWithEmailAndPassword(auth, email, password)
+    const register = () => {
+        if(email == null || password == null) {
+            setFaile("Please enter a valid email and password");
+        } else {
+            createUserWithEmailAndPassword(auth, email, password)
             .catch((error) => {
                 const errorMessage = error.message;
                 setFaile(errorMessage);
             });
+        }
     }
     return(
-        <View style={styles.container}>
+        <KeyboardAwareScrollView contentContainerStyle={styles.container} bounces={false}>
             <View>
                 <Text style={styles.title}>CalCounter</Text>
             </View>
             <View>
-                <Text style={styles.greet}>Welcome</Text>
+                <Text style={styles.greet}>Register your Account</Text>
+                <Text style={styles.describe}>Email</Text>
                 <TextInput placeholder="Email" style={styles.input} onChangeText={(value)=>{setEmail(value)}}/>
+                <Text style={styles.describe}>Password</Text>
                 <TextInput placeholder="Passwort" style={styles.input} secureTextEntry={true} onChangeText={(value)=>{setPassword(value)}}/>  
             </View>
             <View style={styles.btnContainer}>
-                <TouchableOpacity style={styles.login} onPress={login}>
-                    <Text style={styles.whiteText}>Login</Text>
+                <TouchableOpacity style={styles.register} onPress={register}>
+                    <Text style={styles.whiteText}>Register</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.signUpContainer}>
-                    <Text>No Account? </Text>
-                    <Text style={styles.signUp} onPress={()=>{navigation.navigate("Register")}}>Register</Text>
+                <TouchableOpacity style={styles.loginContainer}>
+                    <Text>Do you already have an account? </Text>
+                    <Text style={styles.login} onPress={()=>{navigation.goBack()}}>go to Login</Text>
                 </TouchableOpacity>
                 <Text style={{color:"red"}}>{(fail==null)?null:fail}</Text>
             </View>
-        </View>
+        </KeyboardAwareScrollView>
     )
 }
 
@@ -54,7 +62,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 30,
         marginTop:100,
-        marginBottom:150,
+        marginBottom:100,
     },
     input:{
         height:40,
@@ -68,18 +76,18 @@ const styles = StyleSheet.create({
         margin:5,
         opacity:0.5,
         fontSize:20,
-        alignSelf:"center",
         marginBottom:50,
+        alignSelf:"center"
     },
-    login:{
+    register:{
         borderRadius:20,
         backgroundColor:"black",
         height:40,
         padding:12,
         width:320,
-        marginTop:10,
+        marginTop:5,
         marginBottom:10,
-        alignItems:"center"
+        alignItems:"center",
     },
     btnContainer:{
         flex:1,
@@ -89,10 +97,14 @@ const styles = StyleSheet.create({
     whiteText:{
         color:"white",
     },
-    signUpContainer:{
+    loginContainer:{
         flexDirection:"row",
     },
-    signUp:{
+    login:{
         color:"blue",
+    },
+    describe:{
+        margin:5,
+        opacity:0.5,
     }
 });

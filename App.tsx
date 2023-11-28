@@ -3,9 +3,9 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { useAuth } from './src/hooks/useAuth';
 
-import Login from './src/views/Login';
-import Register from './src/views/Register';
-import Scanner from './src/views/Scanner';
+import Login from './src/views/auth/Login';
+import Register from './src/views/auth/Register';
+import Scanner from './src/views/utils/Scanner';
 import React from 'react';
 import { Provider } from 'react-redux';
 import { store } from './src/state/Store';
@@ -35,7 +35,7 @@ export default function App() {
       <Provider store={store}>
         <NavigationContainer>
           <Stack.Navigator>
-            <Stack.Screen name="Home" component={Scanner} options={{ headerShown: false }}/>
+            <Stack.Screen name="Scanner " component={Scanner} options={{ headerShown: false }}/>
           </Stack.Navigator>
         </NavigationContainer>
       </Provider>
