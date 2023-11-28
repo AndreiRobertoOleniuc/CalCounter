@@ -16,9 +16,12 @@ export const foodSlice = createSlice({
     addFood: (state, action) => {
       state.food.push(action.payload);
     },
+    deleteFood: (state, action) => {
+      state.food = state.food.filter((food) => food.name !== action.payload);
+    },
   },
 });
 
-export const { addFood } = foodSlice.actions;
+export const { addFood, deleteFood } = foodSlice.actions;
 
 export default foodSlice.reducer;
