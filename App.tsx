@@ -9,13 +9,14 @@ import Scanner from './src/views/utils/Scanner';
 import React from 'react';
 import { Provider } from 'react-redux';
 import { store } from './src/state/Store';
+import { MainPage } from './src/views/MainPage';
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   const { user } = useAuth();
   
-  if(!user){
+  if(false){
     return (
       <Provider store={store}>
         <NavigationContainer>
@@ -35,7 +36,14 @@ export default function App() {
       <Provider store={store}>
         <NavigationContainer>
           <Stack.Navigator>
-            <Stack.Screen name="Scanner " component={Scanner} options={{ headerShown: false }}/>
+          <Stack.Screen name="Home" options={{ headerShown: true }}>
+              {(props) => <MainPage {...props} />}
+            </Stack.Screen>
+            <Stack.Screen name="Scanner" options={{ 
+              headerShown: false ,
+              }}>
+              {(props) => <Scanner {...props} />}
+            </Stack.Screen>
           </Stack.Navigator>
         </NavigationContainer>
       </Provider>

@@ -3,7 +3,7 @@ import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
-import { addFood } from '../../state/foodSlice';
+import { setScannedOrSearchedFood } from '../../state/foodSlice';
 import { RootState } from '../../state/Store'; // import the type of your root state
 import { Dimensions } from 'react-native';
 import NavigationProps from '../../shared/models/NavigationProp';
@@ -31,22 +31,20 @@ export default function Scanner({navigation} : NavigationProps) {
   const [hasPermission, setHasPermission] = useState(null);
   const [product, setProduct] = useState(null);
   const [manualBarCode, onChangeBarcode] = React.useState('');
-  const foodSelector = useSelector((state: RootState) => state.food);
+  const food = useSelector((state: RootState) => state.food);
   const dispatch = useDispatch();
-  let amountOfFood = 0;
 
   useEffect(() => {
     if(!hasPermission){
-      amountOfFood = foodSelector.food.length;
       (async () => {
         const { status } = await BarCodeScanner.requestPermissionsAsync();
         setHasPermission(status === 'granted');
       })();
     }
-    if(foodSelector.food.length != amountOfFood){
-      console.log('Move to different page')
-    }
-  }, [foodSelector]);
+    console.log("food", food);
+    console.log("product", product);
+    console.log("manualBarCode", manualBarCode);
+  }, [food,product,manualBarCode]);
 
   //@ts-ignore
   const handleBarCodeScanned = ({ data }) => {
@@ -60,7 +58,8 @@ export default function Scanner({navigation} : NavigationProps) {
   }
 
   const getFood = (barcode: string) => {
-    axios.get(`https://world.openfoodfacts.net/api/v2/product/${barcode}?fields=product_name,nutriscore_data,brands,image_front_url,nutriments`).then((response) => {
+    axios.get(`https://world.openfoodfacts.org/api/v2/product/${barcode}?fields=product_name,nutriscore_data,brands,image_front_url,nutriments`)
+      .then((response) => {
       const food = {
           name: response.data.product.product_name,
           brand: response.data.product.brands,
@@ -68,7 +67,7 @@ export default function Scanner({navigation} : NavigationProps) {
           nutriscore: response.data.product.nutriscore_data.grade,
           image: response.data.product.image_front_url,
       };
-      dispatch(addFood(food));
+      dispatch(setScannedOrSearchedFood(food));
     }).catch((error) => {
       console.log("Something went wrong");
       console.log(error.response.data);

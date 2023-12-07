@@ -7,6 +7,7 @@ interface Food {
 
 const initialState = {
   food: [] as Food[],
+  scannedOrSearchedFood: {} as Food,
 };
 
 export const foodSlice = createSlice({
@@ -19,9 +20,13 @@ export const foodSlice = createSlice({
     deleteFood: (state, action) => {
       state.food = state.food.filter((food) => food.name !== action.payload);
     },
+    setScannedOrSearchedFood: (state, action) => {
+      state.scannedOrSearchedFood = action.payload;
+    },
   },
 });
 
-export const { addFood, deleteFood } = foodSlice.actions;
+export const { addFood, deleteFood, setScannedOrSearchedFood } =
+  foodSlice.actions;
 
 export default foodSlice.reducer;
