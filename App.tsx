@@ -1,17 +1,21 @@
+import React from 'react';
+
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Provider } from 'react-redux';
+import { MaterialCommunityIcons} from '@expo/vector-icons'; 
 
 import { useAuth } from './src/hooks/useAuth';
 
 import Login from './src/views/auth/Login';
 import Register from './src/views/auth/Register';
 import Scanner from './src/views/utils/Scanner';
-import React from 'react';
-import { Provider } from 'react-redux';
 import { store } from './src/state/Store';
 import { MainPage } from './src/views/MainPage';
 
 const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
 
 export default function App() {
   const { user } = useAuth();
@@ -35,16 +39,26 @@ export default function App() {
     return (
       <Provider store={store}>
         <NavigationContainer>
-          <Stack.Navigator>
-          <Stack.Screen name="Home" options={{ headerShown: true }}>
-              {(props) => <MainPage {...props} />}
-            </Stack.Screen>
-            <Stack.Screen name="Scanner" options={{ 
-              headerShown: false ,
+          <Tab.Navigator>
+            <Tab.Screen name="Home" options={{
+                headerShown: false,
+                tabBarLabel: 'Home',
+                tabBarIcon: ({ color, size }) => (
+                  <MaterialCommunityIcons name="home" color={color} size={size} />
+                ),
               }}>
-              {(props) => <Scanner {...props} />}
-            </Stack.Screen>
-          </Stack.Navigator>
+                {(props) => <MainPage {...props} />}
+            </Tab.Screen>
+            <Tab.Screen name="Profile" options={{
+                headerShown: false,
+                tabBarLabel: 'Profile',
+                tabBarIcon: ({ color, size }) => (
+                  <MaterialCommunityIcons name="account" color={color} size={size} />
+                ),
+              }}>
+                {(props) => <Scanner {...props} />}
+            </Tab.Screen>
+          </Tab.Navigator>
         </NavigationContainer>
       </Provider>
     );

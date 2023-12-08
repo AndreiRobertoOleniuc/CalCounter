@@ -1,6 +1,6 @@
 import NavigationProps from "../shared/models/NavigationProp";
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View ,Dimensions} from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons'; 
+import { ScrollView, StyleSheet, Text, View ,Dimensions, TouchableHighlight} from 'react-native';
+import { MaterialCommunityIcons} from '@expo/vector-icons'; 
 
 export function MainPage({navigation} : NavigationProps){
     const sections: {sectionName: string}[] = [
@@ -11,20 +11,34 @@ export function MainPage({navigation} : NavigationProps){
     ]
 
     const addFood = () =>{
-        navigation.navigate("Scanner")
+        //navigation.navigate("Scanner")
     }
     return (
         <ScrollView>
             <View style={styles.home}>
+                <View style={styles.homeTitle}>
+                    <Text style={styles.titleDiary}>Diary</Text>
+                    <Text style={styles.titleDate}>today</Text>
+                    <MaterialCommunityIcons name="menu-down" color="black" size={24} />
+                </View>
                 <View style={styles.calorieDashboard}></View>
-                {sections.map((section)=>{
+                {sections.map((section, i)=>{
                     return (
-                        <View>
-                            <View style={styles.foodSection}>
-                                <Text style={styles.sectionTitle}>{section.sectionName}</Text>
-                                <TouchableOpacity style={styles.addFood} onPress={addFood}>
-                                    <MaterialIcons name="add-circle" size={32} color="#f5ce98" />
-                                </TouchableOpacity>
+                        <View style={styles.foodSection} key={i}>
+                            <View style={styles.sectionHeader}>
+                                <Text style={styles.sectionTitle}>
+                                    {section.sectionName}
+                                </Text>
+                                <Text style={styles.sectionKcal}>
+                                    0 kcal
+                                </Text>
+                            </View>
+                            <View style={styles.add}>
+                                <View style={styles.horizonalSplit1} />
+                                <TouchableHighlight  underlayColor="#edc793" style={styles.addFood} onPress={addFood}>
+                                    <Text style={styles.addFoodIcon}>+</Text>
+                                </TouchableHighlight>
+                                <View style={styles.horizonalSplit2} />
                             </View>
                         </View>
                     )
@@ -39,35 +53,79 @@ const styles = StyleSheet.create({
         width: Dimensions.get('screen').width,
         height: Dimensions.get('screen').height,
         backgroundColor:"#fffff9",
+        paddingTop:60,
+    },
+    homeTitle:{
+        flexDirection: 'row', 
+        marginHorizontal:"5%",
+        alignItems:"center",        
+    },
+    titleDiary:{
+        fontSize:30,
+        color:"#211d2b",
+        fontWeight:"bold",
+        marginRight:10,
+    },
+    titleDate:{
+        fontSize:30,
+        color:"#282431",
     },
     calorieDashboard:{
-        width: "90%",
+        width: "92%",
         height: 200,
-        backgroundColor:"#333332",
+        backgroundColor:"#303d53",
         alignSelf: "center",
         marginTop: 20,
         borderRadius:10,
         marginBottom:20,
     },
     foodSection:{
-        marginBottom:10,
-        marginHorizontal:"5%",
+        marginBottom:30,
+    },
+    add:{
+        marginTop:10,
+        flexDirection: 'row', 
+        alignItems: 'center'
     },
     addFood:{
-        marginTop:10,
-        width: 32,
-        height: 32,
+        width: 50,
+        height: 35,
         alignItems:"center",
         justifyContent:"center",
+        backgroundColor:"#f5ce98",
+        borderRadius:12,
     },
     addFoodIcon:{
-        color:"#ffffff",
-        fontWeight:"bold"
+        color:"#fefbf7",
+        fontWeight:"bold",  
+        fontSize:25,
+    },
+    horizonalSplit1:{
+        flex: 1, 
+        height: 1, 
+        backgroundColor: '#eff0f5'
+    },
+    horizonalSplit2:{
+        flex: 18, 
+        height: 1, 
+        backgroundColor: '#eff0f5'
+    },
+    sectionHeader:{
+        flexDirection: 'row', 
+        justifyContent:"space-between",
     },
     sectionTitle:{
         fontSize:20,
-        color:"#211e2c",
+        color:"#282431",
         fontWeight:"500",
+        marginHorizontal:"5%",
+    },
+    sectionKcal:{
+        fontSize:15,
+        color:"#282431",
+        fontWeight:"500",
+        marginHorizontal:"5%",
+        marginBottom:10,
     },
     horizontalSplit:{
         width:"100%",
