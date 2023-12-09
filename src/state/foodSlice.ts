@@ -2,12 +2,15 @@ import { createSlice } from "@reduxjs/toolkit";
 
 interface Food {
   name: string;
+  brand: string;
   calories: number;
+  nutriscore: string;
+  image: string;
 }
 
 const initialState = {
   food: [] as Food[],
-  scannedOrSearchedFood: {} as Food,
+  scannedOrSearchedFood: null as Food | null,
 };
 
 export const foodSlice = createSlice({

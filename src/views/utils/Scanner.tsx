@@ -31,7 +31,7 @@ export default function Scanner({navigation} : NavigationProps) {
   const [hasPermission, setHasPermission] = useState(null);
   const [product, setProduct] = useState(null);
   const [manualBarCode, onChangeBarcode] = React.useState('');
-  const food = useSelector((state: RootState) => state.food);
+  const scannedFood = useSelector((state: RootState) => state.food.scannedOrSearchedFood);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -41,10 +41,16 @@ export default function Scanner({navigation} : NavigationProps) {
         setHasPermission(status === 'granted');
       })();
     }
-    console.log("food", food);
-    console.log("product", product);
-    console.log("manualBarCode", manualBarCode);
-  }, [food,product,manualBarCode]);
+    if(scannedFood !== null){
+      navigation.navigate("Details");
+    }
+
+    const unsubscribe = navigation.addListener('focus', () => {
+      setProduct(null);
+    });
+
+    return unsubscribe;
+  }, [scannedFood, navigation]);
 
   //@ts-ignore
   const handleBarCodeScanned = ({ data }) => {
@@ -58,6 +64,7 @@ export default function Scanner({navigation} : NavigationProps) {
   }
 
   const getFood = (barcode: string) => {
+    console.log(barcode);
     axios.get(`https://world.openfoodfacts.org/api/v2/product/${barcode}?fields=product_name,nutriscore_data,brands,image_front_url,nutriments`)
       .then((response) => {
       const food = {
@@ -146,6 +153,6 @@ const styles = StyleSheet.create({
   },
   camera: {
     width: Dimensions.get('screen').width,
-    height: Dimensions.get('screen').height - 70,
+    height: Dimensions.get('screen').height - 150,
   },
 });

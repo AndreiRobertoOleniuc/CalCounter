@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Provider } from 'react-redux';
 import { MaterialCommunityIcons} from '@expo/vector-icons'; 
+import { Text } from 'react-native';
 
 import { useAuth } from './src/hooks/useAuth';
 
@@ -13,10 +14,11 @@ import Register from './src/views/auth/Register';
 import Scanner from './src/views/utils/Scanner';
 import { store } from './src/state/Store';
 import { MainPage } from './src/views/MainPage';
+import FoodDetail from './src/views/FoodDetail';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
-
+const IconColor ="#303d53";
 export default function App() {
   const { user } = useAuth();
   
@@ -42,21 +44,63 @@ export default function App() {
           <Tab.Navigator>
             <Tab.Screen name="Home" options={{
                 headerShown: false,
-                tabBarLabel: 'Home',
-                tabBarIcon: ({ color, size }) => (
-                  <MaterialCommunityIcons name="home" color={color} size={size} />
+                tabBarLabel: ({ focused, color }) => (
+                  <Text style={{ color: focused ? IconColor : color }}>Home</Text>
+                ),
+                tabBarIcon: ({ color, size, focused }) => (
+                  <MaterialCommunityIcons
+                    name="home"
+                    color={focused ? IconColor : color}
+                    size={size}
+                  />
                 ),
               }}>
                 {(props) => <MainPage {...props} />}
             </Tab.Screen>
-            <Tab.Screen name="Profile" options={{
+            <Tab.Screen name="Search" options={{
                 headerShown: false,
-                tabBarLabel: 'Profile',
-                tabBarIcon: ({ color, size }) => (
-                  <MaterialCommunityIcons name="account" color={color} size={size} />
+                tabBarLabel: ({ focused, color }) => (
+                  <Text style={{ color: focused ? IconColor : color }}>Search</Text>
+                ),
+                tabBarIcon: ({ color, size, focused }) => (
+                  <MaterialCommunityIcons
+                    name="magnify"
+                    color={focused ? IconColor : color}
+                    size={size}
+                  />
                 ),
               }}>
                 {(props) => <Scanner {...props} />}
+            </Tab.Screen>
+            <Tab.Screen name="Scanner" options={{
+                headerShown: false,
+                tabBarLabel: ({ focused, color }) => (
+                  <Text style={{ color: focused ? IconColor : color }}>Scanner</Text>
+                ),
+                tabBarIcon: ({ color, size, focused }) => (
+                  <MaterialCommunityIcons
+                    name="barcode-scan"
+                    color={focused ? IconColor : color}
+                    size={size}
+                  />
+                ),
+              }}>
+                {(props) => <Scanner {...props} />}
+            </Tab.Screen>
+            <Tab.Screen name="Details" options={{
+                headerShown: false,
+                tabBarLabel: ({ focused, color }) => (
+                  <Text style={{ color: focused ? IconColor : color }}>Details</Text>
+                ),
+                tabBarIcon: ({ color, size, focused }) => (
+                  <MaterialCommunityIcons
+                    name="food"
+                    color={focused ? IconColor : color}
+                    size={size}
+                  />
+                ),
+              }}>
+                {(props) => <FoodDetail {...props} />}
             </Tab.Screen>
           </Tab.Navigator>
         </NavigationContainer>

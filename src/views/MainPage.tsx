@@ -11,7 +11,7 @@ export function MainPage({navigation} : NavigationProps){
     ]
 
     const addFood = () =>{
-        //navigation.navigate("Scanner")
+        navigation.navigate("Scanner")
     }
     return (
         <ScrollView>
@@ -51,7 +51,7 @@ export function MainPage({navigation} : NavigationProps){
 const styles = StyleSheet.create({
     home:{
         width: Dimensions.get('screen').width,
-        height: Dimensions.get('screen').height,
+        height: Dimensions.get('screen').height-80,
         backgroundColor:"#fffff9",
         paddingTop:60,
     },
