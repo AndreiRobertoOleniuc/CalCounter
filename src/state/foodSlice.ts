@@ -1,12 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-
-interface Food {
-  name: string;
-  brand: string;
-  calories: number;
-  nutriscore: string;
-  image: string;
-}
+import { Food } from "../shared/models/Food";
 
 const initialState = {
   food: [] as Food[],

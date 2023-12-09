@@ -27,6 +27,7 @@ const barCodeTypes = [
     BarCodeScanner.Constants.BarCodeType.codabar,
 ];
 //4011100005846 test barcode M&M
+//90331701 test barcode Shokata
 export default function Scanner({navigation} : NavigationProps) {
   const [hasPermission, setHasPermission] = useState(null);
   const [product, setProduct] = useState(null);
@@ -70,9 +71,13 @@ export default function Scanner({navigation} : NavigationProps) {
       const food = {
           name: response.data.product.product_name,
           brand: response.data.product.brands,
-          calories: response.data.product.nutriments["energy-kcal_100g"],
           nutriscore: response.data.product.nutriscore_data.grade,
           image: response.data.product.image_front_url,
+          unit: response.data.product.nutriments["carbohydrates_unit"],
+          calories: response.data.product.nutriments["energy-kcal_100g"],
+          carbs: response.data.product.nutriments["carbohydrates_100g"],
+          fats: response.data.product.nutriments["fat_100g"],
+          protein: response.data.product.nutriments["proteins_100g"],
       };
       dispatch(setScannedOrSearchedFood(food));
     }).catch((error) => {
