@@ -5,6 +5,7 @@ import { RootState } from "../state/Store";
 import { useEffect } from "react";
 import { MaterialCommunityIcons} from '@expo/vector-icons'; 
 import DonutPie from "../shared/components/DonutPie";
+import HorizontalBarChart from "../shared/components/HorizontalBarChart";
 
 export default function FoodDetail({navigation} : NavigationProps) {
     const scannedFood = useSelector((state: RootState) => state.food.scannedOrSearchedFood);
@@ -72,7 +73,12 @@ export default function FoodDetail({navigation} : NavigationProps) {
                         marginBottom: 10,
                         flexDirection: "row",
                         justifyContent: "flex-end",
+                        borderColor: "#a3a2b5",
+                        borderWidth: 1,
                     }}>
+                        <HorizontalBarChart scannedFood={scannedFood} target="carbs"/>
+                        <HorizontalBarChart scannedFood={scannedFood} target="fat"/>
+                        <HorizontalBarChart scannedFood={scannedFood} target="protein"/>
                         <DonutPie scannedFood={scannedFood}/>
                     </View>
                     {/* <Text>{scannedFood?.nutriscore}</Text> */}
