@@ -9,28 +9,29 @@ type DonutPieProps = {
 };
 
 const DonutPie: React.FC<DonutPieProps> = ({scannedFood}) => {
-  const radius = 70;
+  const radius = 60;
+  const circleWidth = 15;
   const circleCircumference = 2 * Math.PI * radius;
 
-  const carbs = scannedFood?.carbs || 33;
-  const fats = scannedFood?.fats || 33;
-  const protein = scannedFood?.protein || 33;
-  const total = carbs + fats + protein;
+  const carbs = scannedFood?.carbs || 0;
+  const fats = scannedFood?.fats || 0;
+  const proteins = scannedFood?.protein || 0;
+  const total = carbs + fats + proteins;
 
   const carbsPercentage = (carbs / total) * 100;
   const fatsPercentage = (fats / total) * 100;
-  const proteinPercentage = (protein / total) * 100;
-  
+  const proteinsPercentage = (proteins / total) * 100;
+
   const carbsStrokeDashoffset =
     circleCircumference - (circleCircumference * carbsPercentage) / 100;
-  const fatsStrokeDashoffset =
+  const fatsDashoffset =
     circleCircumference - (circleCircumference * fatsPercentage) / 100;
   const proteinStrokeDashoffset =
-    circleCircumference - (circleCircumference * proteinPercentage) / 100;
+    circleCircumference - (circleCircumference * proteinsPercentage) / 100;
 
-  const carbsAngle = (carbs / total) * 360;
-  const fatsAngle = (fats / total) * 360;
-  const proteinAngle = carbsAngle + fatsAngle;
+  const groceriesAngle = (carbs / total) * 360;
+  const billsAngle = (fats / total) * 360;
+  const regularAngle = groceriesAngle + billsAngle;
 
   return (
     <View style={styles.container}>
@@ -44,7 +45,7 @@ const DonutPie: React.FC<DonutPieProps> = ({scannedFood}) => {
                 r={radius}
                 stroke="#F1F6F9"
                 fill="transparent"
-                strokeWidth="40"
+                strokeWidth={circleWidth}
               />
              ) : (
                <>
@@ -54,7 +55,7 @@ const DonutPie: React.FC<DonutPieProps> = ({scannedFood}) => {
                   r={radius}
                   stroke="#f5cd98"
                   fill="transparent"
-                  strokeWidth="20"
+                  strokeWidth={circleWidth}
                   strokeDasharray={circleCircumference}
                   strokeDashoffset={carbsStrokeDashoffset}
                   rotation={0}
@@ -68,10 +69,10 @@ const DonutPie: React.FC<DonutPieProps> = ({scannedFood}) => {
                   r={radius}
                   stroke="#53e38c"
                   fill="transparent"
-                  strokeWidth="20"
+                  strokeWidth={circleWidth}
                   strokeDasharray={circleCircumference}
-                  strokeDashoffset={fatsStrokeDashoffset}
-                  rotation={fatsAngle}
+                  strokeDashoffset={fatsDashoffset}
+                  rotation={groceriesAngle}
                   originX="90"
                   originY="90"
                   strokeLinecap="round"
@@ -82,10 +83,10 @@ const DonutPie: React.FC<DonutPieProps> = ({scannedFood}) => {
                   r={radius}
                   stroke="#f85252"
                   fill="transparent"
-                  strokeWidth="20"
+                  strokeWidth={circleWidth}
                   strokeDasharray={circleCircumference}
                   strokeDashoffset={proteinStrokeDashoffset}
-                  rotation={proteinAngle}
+                  rotation={regularAngle}
                   originX="90"
                   originY="90"
                   strokeLinecap="round"
@@ -95,9 +96,9 @@ const DonutPie: React.FC<DonutPieProps> = ({scannedFood}) => {
             }
           </G>
         </Svg>
-        <View style={styles.labelContainer}>
+        <View style={styles.label}>
           <Text style={{fontSize: 22, fontWeight: "700"}}>{total}</Text>
-          <Text style={{fontSize: 18, fontWeight: "300"}}>kcal</Text>
+          <Text style={{fontSize: 18, fontWeight: "400"}}>kcal</Text>
         </View>
       </View>
     </View>
@@ -111,13 +112,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    alignItems: "flex-end",
+    alignItems: "center",
   },
   graphWrapper: {
     alignItems: "center",
     justifyContent: "center",
   },
-  labelContainer: {
+  label: {
     position: "absolute",
     textAlign: "center",
     fontWeight: "700",
