@@ -69,6 +69,8 @@ export default function App() {
                     size={size}
                   />
                 ),
+                tabBarButton: () => null, // Hide the tab button
+
               }}>
                 {(props) => <Scanner {...props} />}
             </Tab.Screen>
@@ -84,10 +86,13 @@ export default function App() {
                     size={size}
                   />
                 ),
+                tabBarButton: () => null, // Hide the tab button
               }}>
                 {(props) => <Scanner {...props} />}
             </Tab.Screen>
-            <Tab.Screen name="Details" options={{
+            <Tab.Screen
+              name="Details"
+              options={{
                 headerShown: false,
                 tabBarLabel: ({ focused, color }) => (
                   <Text style={{ color: focused ? IconColor : color }}>Details</Text>
@@ -99,8 +104,10 @@ export default function App() {
                     size={size}
                   />
                 ),
-              }}>
-                {(props) => <FoodDetail {...props} />}
+                tabBarButton: () => null, // Hide the tab button
+              }}
+            >
+              {(props) => <FoodDetail {...props} />}
             </Tab.Screen>
           </Tab.Navigator>
         </NavigationContainer>

@@ -67,7 +67,7 @@ const DonutPie: React.FC<DonutPieProps> = ({scannedFood}) => {
                   cx="50%"
                   cy="50%"
                   r={radius}
-                  stroke="#53e38c"
+                  stroke="#f85252"
                   fill="transparent"
                   strokeWidth={circleWidth}
                   strokeDasharray={circleCircumference}
@@ -81,7 +81,7 @@ const DonutPie: React.FC<DonutPieProps> = ({scannedFood}) => {
                   cx="50%"
                   cy="50%"
                   r={radius}
-                  stroke="#f85252"
+                  stroke="#53e38c"
                   fill="transparent"
                   strokeWidth={circleWidth}
                   strokeDasharray={circleCircumference}
