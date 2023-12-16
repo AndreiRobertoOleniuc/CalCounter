@@ -28,6 +28,7 @@ const barCodeTypes = [
 ];
 //4011100005846 test barcode M&M
 //90331701 test barcode Shokata
+//4063367394072 test barcode Chips
 export default function Scanner({navigation} : NavigationProps) {
   const [hasPermission, setHasPermission] = useState(null);
   const [product, setProduct] = useState(null);

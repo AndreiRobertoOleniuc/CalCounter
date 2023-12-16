@@ -9,8 +9,8 @@ type DonutPieProps = {
 };
 
 const DonutPie: React.FC<DonutPieProps> = ({scannedFood}) => {
-  const radius = 60;
-  const circleWidth = 15;
+  const radius = 50;
+  const circleWidth = 12;
   const circleCircumference = 2 * Math.PI * radius;
 
   const carbs = scannedFood?.carbs || 0;
@@ -97,7 +97,7 @@ const DonutPie: React.FC<DonutPieProps> = ({scannedFood}) => {
           </G>
         </Svg>
         <View style={styles.label}>
-          <Text style={{fontSize: 22, fontWeight: "700"}}>{total}</Text>
+          <Text style={{fontSize: 22, fontWeight: "700"}}>{scannedFood?.calories}</Text>
           <Text style={{fontSize: 18, fontWeight: "400"}}>kcal</Text>
         </View>
       </View>
@@ -110,7 +110,7 @@ export default DonutPie ;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 2,
+    flex: 0.5,
     justifyContent: "center",
     alignItems: "center",
   },

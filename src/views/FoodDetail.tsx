@@ -52,6 +52,7 @@ export default function FoodDetail({navigation} : NavigationProps) {
                     <View style={{
                         flexDirection: "row",
                         marginBottom: 5,
+                        flexWrap: "wrap",                      
                     }}>
                         {scannedFood.name.split(" ").map((word, i)=>{
                             return <Text key={i} style={{
@@ -72,16 +73,13 @@ export default function FoodDetail({navigation} : NavigationProps) {
                         width: "100%",
                         marginBottom: 10,
                         flexDirection: "row",
-                        justifyContent: "flex-end",
-                        borderColor: "#a3a2b5",
-                        borderWidth: 1,
+                        marginTop: -30
                     }}>
                         <HorizontalBarChart scannedFood={scannedFood} target="carbs"/>
-                        <HorizontalBarChart scannedFood={scannedFood} target="fat"/>
+                        <HorizontalBarChart scannedFood={scannedFood} target="fats"/>
                         <HorizontalBarChart scannedFood={scannedFood} target="protein"/>
                         <DonutPie scannedFood={scannedFood}/>
                     </View>
-                    {/* <Text>{scannedFood?.nutriscore}</Text> */}
                 </View>
                 <TouchableOpacity onPress={()=>navigation.goBack()} style={{
                         position: "absolute",
