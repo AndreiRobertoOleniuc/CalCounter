@@ -4,20 +4,23 @@ import { useSelector } from "react-redux";
 import { RootState } from "../state/Store";
 import { useEffect } from "react";
 import { MaterialCommunityIcons} from '@expo/vector-icons'; 
-import PieChart from 'react-native-expo-pie-chart';
+import DonutPie from "../shared/components/DonutPie";
 
 export default function FoodDetail({navigation} : NavigationProps) {
     const scannedFood = useSelector((state: RootState) => state.food.scannedOrSearchedFood);
-    let otherPart = 0;
     useEffect(()=>{
         console.log(scannedFood);
-        otherPart = 100 - scannedFood?.carbs - scannedFood?.fats - scannedFood?.protein;
     },[])
 
     if(scannedFood === null){
         return (
-            <View>
-                <Text>Food Detail</Text>
+            <View style={{
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+            }}
+            >
+                <DonutPie scannedFood={scannedFood}/>
             </View>
         )
     }else{
@@ -70,37 +73,7 @@ export default function FoodDetail({navigation} : NavigationProps) {
                         flexDirection: "row",
                         justifyContent: "flex-end",
                     }}>
-                        <PieChart
-                            data={[
-                                {
-                                    key: 'Carbs',
-                                    count: scannedFood?.carbs,
-                                    color: '#f5ce98',
-                                },
-                                {
-                                    key: 'Fats',
-                                    count: scannedFood?.fats,
-                                    color: '#f85253',
-                                },
-                                {
-                                    key: 'Protein',
-                                    count: scannedFood?.protein,
-                                    color: '#54e38c',
-                                },
-                                {
-                                    key: 'Other',
-                                    count: otherPart,
-                                    color: '#a3a2b5',
-                                },
-                            ]}
-                            length={120} 
-                            rotation={0} 
-                            zeroTotalCircleColor={"#ededed"} 
-                            containerProps={undefined} 
-                            svgProps={undefined} 
-                            gProps={undefined} 
-                            circleProps={undefined}                            
-                        />
+                        <DonutPie scannedFood={scannedFood}/>
                     </View>
                     {/* <Text>{scannedFood?.nutriscore}</Text> */}
                 </View>
