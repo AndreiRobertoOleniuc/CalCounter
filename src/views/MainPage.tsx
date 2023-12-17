@@ -1,8 +1,12 @@
 import NavigationProps from "../shared/models/NavigationProp";
 import { ScrollView, StyleSheet, Text, View ,Dimensions, TouchableHighlight} from 'react-native';
 import { MaterialCommunityIcons} from '@expo/vector-icons'; 
+import { useDispatch } from "react-redux";
+import { setCurrentState, setUtilsPage } from "../state/appStateSlice";
 
 export function MainPage({navigation} : NavigationProps){
+    const dispatch = useDispatch();
+
     const sections: {sectionName: string}[] = [
         {sectionName:"breakfast"},
         {sectionName:"lunch"},
@@ -11,7 +15,8 @@ export function MainPage({navigation} : NavigationProps){
     ]
 
     const addFood = () =>{
-        navigation.navigate("Scanner")
+        dispatch(setUtilsPage("Search"))
+        dispatch(setCurrentState("UTILS"));
     }
     return (
         <ScrollView>

@@ -159,6 +159,6 @@ const styles = StyleSheet.create({
   },
   camera: {
     width: Dimensions.get('screen').width,
-    height: Dimensions.get('screen').height - 150,
+    height: Dimensions.get('screen').height - 70,
   },
 });

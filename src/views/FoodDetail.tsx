@@ -2,16 +2,21 @@ import { View ,Text, Image, StyleSheet, Dimensions, TouchableOpacity} from "reac
 import NavigationProps from "../shared/models/NavigationProp";
 import { useSelector } from "react-redux";
 import { RootState } from "../state/Store";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { MaterialCommunityIcons} from '@expo/vector-icons'; 
 import DonutPie from "../shared/components/DonutPie";
 import HorizontalBarChart from "../shared/components/HorizontalBarChart";
+import { Picker } from '@react-native-picker/picker';
 
 export default function FoodDetail({navigation} : NavigationProps) {
     const scannedFood = useSelector((state: RootState) => state.food.scannedOrSearchedFood);
+    
     useEffect(()=>{
         console.log(scannedFood);
-    },[])
+    },[scannedFood])
+
+    const [isPickerOpen, setIsPickerOpen] = useState(false);
+    const [selectedValue, setSelectedValue] = useState('unit1');
 
     if(scannedFood === null){
         return (
@@ -80,6 +85,45 @@ export default function FoodDetail({navigation} : NavigationProps) {
                         <HorizontalBarChart scannedFood={scannedFood} target="protein"/>
                         <DonutPie scannedFood={scannedFood}/>
                     </View>
+                    <View style={styles.actionSection}>
+                        <Text style={styles.actionSectionTitle}>
+                            serving size
+                        </Text>
+                        <Text style={styles.actionSectionTitle}>
+                            {scannedFood?.unit}
+                        </Text>
+                    </View>
+                    <View style={styles.actionSection}>
+                        <Text style={styles.actionSectionTitle}>
+                            serving
+                        </Text>
+                        {isPickerOpen ? (
+                            <Picker
+                                selectedValue={selectedValue}
+                                style={{ height: 50, width: 50, backgroundColor: "#303d53" }}
+                                onValueChange={(itemValue, itemIndex) => {
+                                    setSelectedValue(itemValue);
+                                    setIsPickerOpen(false);
+                                }}
+                            >
+                                <Picker.Item label="Unit 1" value="unit1" />
+                                <Picker.Item label="Unit 2" value="unit2" />
+                                {/* Add more units as needed */}
+                            </Picker>
+                        ) : (
+                            <TouchableOpacity onPress={() => setIsPickerOpen(true)}>
+                                <Text style={styles.actionSectionTitle}>{selectedValue}</Text>
+                            </TouchableOpacity>
+                        )}                       
+                    </View>
+                    <View style={styles.actionSection}>
+                        <Text style={styles.actionSectionTitle}>
+                            meal
+                        </Text>
+                        <Text style={styles.actionSectionTitle}>
+                            breakfast
+                        </Text>
+                    </View>
                 </View>
                 <TouchableOpacity onPress={()=>navigation.goBack()} style={{
                         position: "absolute",
@@ -96,7 +140,7 @@ const styles = StyleSheet.create({
     foodDetail:{
         marginTop:100,
         width: "100%",
-        height: Dimensions.get('screen').height - 280,
+        height: Dimensions.get('screen').height,
         backgroundColor: "#fcfdff",
         borderRadius:30,
         position: "absolute",
@@ -112,4 +156,18 @@ const styles = StyleSheet.create({
         shadowRadius: 3.84,
         elevation: 5,
     },
+    actionSection:{
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        marginBottom: 10,
+        borderColor: "white",
+        borderBottomColor: "#e0e0e0",
+        borderWidth: 1,
+        padding: 10
+    },
+    actionSectionTitle: {
+        fontSize: 15,
+                            color: "#303d53",
+    }
 });
