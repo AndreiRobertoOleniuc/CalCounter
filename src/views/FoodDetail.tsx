@@ -7,17 +7,25 @@ import { MaterialCommunityIcons} from '@expo/vector-icons';
 import DonutPie from "../shared/components/DonutPie";
 import HorizontalBarChart from "../shared/components/HorizontalBarChart";
 import { Picker } from '@react-native-picker/picker';
+import { useDispatch } from "react-redux";
+import { setCurrentState } from "../state/appStateSlice";
+import { addFood, setScannedOrSearchedFood } from "../state/foodSlice";
 
 export default function FoodDetail({navigation} : NavigationProps) {
     const scannedFood = useSelector((state: RootState) => state.food.scannedOrSearchedFood);
-    
+    const dispatch = useDispatch();
+
     useEffect(()=>{
-        console.log(scannedFood);
     },[scannedFood])
 
     const [isPickerOpen, setIsPickerOpen] = useState(false);
-    const [selectedValue, setSelectedValue] = useState('unit1');
+    const [selectedValue, setSelectedValue] = useState('1');
 
+    const saveFood =()=>{
+        dispatch(setScannedOrSearchedFood(null))
+        dispatch(addFood(scannedFood))
+        dispatch(setCurrentState("HOME"))
+    }
     if(scannedFood === null){
         return (
             <View style={{
@@ -97,24 +105,9 @@ export default function FoodDetail({navigation} : NavigationProps) {
                         <Text style={styles.actionSectionTitle}>
                             serving
                         </Text>
-                        {isPickerOpen ? (
-                            <Picker
-                                selectedValue={selectedValue}
-                                style={{ height: 50, width: 50, backgroundColor: "#303d53" }}
-                                onValueChange={(itemValue, itemIndex) => {
-                                    setSelectedValue(itemValue);
-                                    setIsPickerOpen(false);
-                                }}
-                            >
-                                <Picker.Item label="Unit 1" value="unit1" />
-                                <Picker.Item label="Unit 2" value="unit2" />
-                                {/* Add more units as needed */}
-                            </Picker>
-                        ) : (
-                            <TouchableOpacity onPress={() => setIsPickerOpen(true)}>
-                                <Text style={styles.actionSectionTitle}>{selectedValue}</Text>
-                            </TouchableOpacity>
-                        )}                       
+                        <TouchableOpacity onPress={() => setIsPickerOpen(true)}>
+                            <Text style={styles.actionSectionTitle}>{selectedValue}</Text>
+                        </TouchableOpacity>
                     </View>
                     <View style={styles.actionSection}>
                         <Text style={styles.actionSectionTitle}>
@@ -124,6 +117,12 @@ export default function FoodDetail({navigation} : NavigationProps) {
                             breakfast
                         </Text>
                     </View>
+                    <TouchableOpacity onPress={saveFood} style={{
+                        alignSelf: "flex-end",
+                        marginTop: 10
+                    }}>
+                        <MaterialCommunityIcons name="check-circle-outline" color="#53e38c" size={44}/>
+                    </TouchableOpacity>
                 </View>
                 <TouchableOpacity onPress={()=>navigation.goBack()} style={{
                         position: "absolute",
