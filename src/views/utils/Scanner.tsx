@@ -79,6 +79,8 @@ export default function Scanner({navigation} : NavigationProps) {
           carbs: response.data.product.nutriments["carbohydrates_100g"],
           fats: response.data.product.nutriments["fat_100g"],
           protein: response.data.product.nutriments["proteins_100g"],
+          //TODO: add meal type
+          mealType: "breakfast",
       };
       dispatch(setScannedOrSearchedFood(food));
     }).catch((error) => {

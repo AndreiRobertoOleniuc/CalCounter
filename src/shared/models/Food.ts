@@ -8,4 +8,5 @@ export interface Food {
   carbs: number;
   protein: number;
   unit: string;
+  mealType: string;
 }

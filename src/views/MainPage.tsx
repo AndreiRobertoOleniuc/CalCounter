@@ -1,11 +1,13 @@
 import NavigationProps from "../shared/models/NavigationProp";
 import { ScrollView, StyleSheet, Text, View ,Dimensions, TouchableHighlight} from 'react-native';
 import { MaterialCommunityIcons} from '@expo/vector-icons'; 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setCurrentState, setUtilsPage } from "../state/appStateSlice";
+import { RootState } from "../state/Store";
 
 export function MainPage({navigation} : NavigationProps){
     const dispatch = useDispatch();
+    const foods = useSelector((state: RootState) => state.food.food);
 
     const sections: {sectionName: string}[] = [
         {sectionName:"breakfast"},
@@ -38,6 +40,15 @@ export function MainPage({navigation} : NavigationProps){
                                     0 kcal
                                 </Text>
                             </View>
+                            {foods.map((food, i)=>{
+                                if(food.mealType === section.sectionName){
+                                    return (
+                                        <View key={i}>
+                                            <Text>{food.name}</Text>
+                                        </View>
+                                    )
+                                }
+                            })}
                             <View style={styles.add}>
                                 <View style={styles.horizonalSplit1} />
                                 <TouchableHighlight  underlayColor="#edc793" style={styles.addFood} onPress={addFood}>
