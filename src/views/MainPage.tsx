@@ -1,13 +1,18 @@
-import NavigationProps from "../shared/models/NavigationProp";
-import { ScrollView, StyleSheet, Text, View ,Dimensions, TouchableHighlight} from 'react-native';
+import { ScrollView, StyleSheet, Text, View ,Dimensions, TouchableHighlight, Image} from 'react-native';
+
 import { MaterialCommunityIcons} from '@expo/vector-icons'; 
 import { useDispatch, useSelector } from "react-redux";
+
 import { setCurrentState, setUtilsPage } from "../state/appStateSlice";
 import { RootState } from "../state/Store";
+import NavigationProps from "../shared/models/NavigationProp";
+import { setScannedOrSearchedFood } from '../state/foodSlice';
+
 
 export function MainPage({navigation} : NavigationProps){
     const dispatch = useDispatch();
     const foods = useSelector((state: RootState) => state.food.food);
+    const foodsGroupedByMealType = [];
 
     const sections: {sectionName: string}[] = [
         {sectionName:"breakfast"},
@@ -16,9 +21,32 @@ export function MainPage({navigation} : NavigationProps){
         {sectionName:"snacks"},
     ]
 
-    const addFood = () =>{
+    const addFood = (mealType: string) =>{
         dispatch(setUtilsPage("Search"))
         dispatch(setCurrentState("UTILS"));
+        const emptyFood = {
+            name: "",
+            brand: "",
+            nutriscore: "",
+            image: "",
+            unit: "",
+            calories: "",
+            carbs: "",
+            fats: "",
+            protein: "",
+            mealType: mealType,
+        };
+        dispatch(setScannedOrSearchedFood(emptyFood));
+    }
+
+    const getSectionKcal = (sectionName: string) =>{
+        let kcal = 0;
+        foods.map((food)=>{
+            if(food.mealType === sectionName){
+                kcal += food.calories;
+            }
+        })
+        return kcal;
     }
     return (
         <ScrollView>
@@ -37,21 +65,63 @@ export function MainPage({navigation} : NavigationProps){
                                     {section.sectionName}
                                 </Text>
                                 <Text style={styles.sectionKcal}>
-                                    0 kcal
+                                    {getSectionKcal(section.sectionName)} kcal 
                                 </Text>
                             </View>
                             {foods.map((food, i)=>{
                                 if(food.mealType === section.sectionName){
                                     return (
-                                        <View key={i}>
-                                            <Text>{food.name}</Text>
+                                        <View key={i} style={{
+                                            ...styles.food,
+                                            borderBottomColor:
+                                                foods.filter((f)=>f.mealType === section.sectionName)
+                                                    .length-1 === i ? 
+                                                        "white" : 
+                                                        "#eff1f4",
+                                            }}>
+                                             <Image
+                                                style={{
+                                                    width: "14%",
+                                                    aspectRatio: 1,
+                                                    borderRadius: 10,
+                                                    marginRight:10,
+                                                }}
+                                                source={{
+                                                uri: food?.image,
+                                                }}
+                                            />
+                                            <View style={{
+                                                flexDirection: "row",
+                                                justifyContent:"space-between",
+                                                alignItems:"center",
+                                                width:"80%",
+                                            }}>
+                                                <View style={{width: "60%"}}>
+                                                    <Text style={{
+                                                        width: "100%",
+                                                        fontSize:15,
+                                                        fontWeight:"600",
+                                                    }}>{food.name}</Text>
+                                                    <Text style={{
+                                                        width: "100%",
+                                                        fontSize:12,
+                                                        color:"#a3a2b5",
+                                                    }}>{food.brand}</Text>
+                                                </View>
+                                                <Text style={{
+                                                    width: "20%",
+                                                    textAlign:"right",
+                                                    fontSize:15,
+                                                    fontWeight:"500",
+                                                }}>{food.calories} kcal</Text>
+                                            </View>
                                         </View>
                                     )
                                 }
                             })}
                             <View style={styles.add}>
                                 <View style={styles.horizonalSplit1} />
-                                <TouchableHighlight  underlayColor="#edc793" style={styles.addFood} onPress={addFood}>
+                                <TouchableHighlight  underlayColor="#edc793" style={styles.addFood} onPress={()=>addFood(section.sectionName)}>
                                     <Text style={styles.addFoodIcon}>+</Text>
                                 </TouchableHighlight>
                                 <View style={styles.horizonalSplit2} />
@@ -67,7 +137,6 @@ export function MainPage({navigation} : NavigationProps){
 const styles = StyleSheet.create({
     home:{
         width: Dimensions.get('screen').width,
-        height: Dimensions.get('screen').height-80,
         backgroundColor:"#fffff9",
         paddingTop:60,
     },
@@ -99,7 +168,6 @@ const styles = StyleSheet.create({
         marginBottom:30,
     },
     add:{
-        marginTop:10,
         flexDirection: 'row', 
         alignItems: 'center'
     },
@@ -118,12 +186,12 @@ const styles = StyleSheet.create({
     },
     horizonalSplit1:{
         flex: 1, 
-        height: 1, 
+        height: 2, 
         backgroundColor: '#eff0f5'
     },
     horizonalSplit2:{
-        flex: 18, 
-        height: 1, 
+        flex: 17, 
+        height: 2, 
         backgroundColor: '#eff0f5'
     },
     sectionHeader:{
@@ -135,13 +203,14 @@ const styles = StyleSheet.create({
         color:"#282431",
         fontWeight:"500",
         marginHorizontal:"5%",
+        marginBottom:20,
     },
     sectionKcal:{
         fontSize:15,
         color:"#282431",
         fontWeight:"500",
         marginHorizontal:"5%",
-        marginBottom:10,
+        marginBottom:0,
     },
     horizontalSplit:{
         width:"100%",
@@ -149,5 +218,16 @@ const styles = StyleSheet.create({
         backgroundColor:"#eff1f4",
         marginTop:-25,
         marginBottom:40,
+    },
+    food: {
+        color:"#282431",
+        marginHorizontal:"5%",
+        flexDirection: 'row',
+        justifyContent:"space-between",
+        alignItems:"center",   
+        marginBottom:12,
+        borderColor: "white",
+        borderWidth:1,
+        paddingBottom:10
     }
 });

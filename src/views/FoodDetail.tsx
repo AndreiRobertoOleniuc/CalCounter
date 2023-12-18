@@ -114,7 +114,7 @@ export default function FoodDetail({navigation} : NavigationProps) {
                             meal
                         </Text>
                         <Text style={styles.actionSectionTitle}>
-                            breakfast
+                            {scannedFood?.mealType}
                         </Text>
                     </View>
                     <TouchableOpacity onPress={saveFood} style={{
