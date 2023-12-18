@@ -12,7 +12,6 @@ import { setScannedOrSearchedFood } from '../state/foodSlice';
 export function MainPage({navigation} : NavigationProps){
     const dispatch = useDispatch();
     const foods = useSelector((state: RootState) => state.food.food);
-    const foodsGroupedByMealType = [];
 
     const sections: {sectionName: string}[] = [
         {sectionName:"breakfast"},
@@ -64,21 +63,15 @@ export function MainPage({navigation} : NavigationProps){
                                 <Text style={styles.sectionTitle}>
                                     {section.sectionName}
                                 </Text>
-                                <Text style={styles.sectionKcal}>
-                                    {getSectionKcal(section.sectionName)} kcal 
-                                </Text>
+                                <View style={styles.sectionKcal}>
+                                    <Text style={{fontSize:20, fontWeight:"600"}}>{getSectionKcal(section.sectionName)} </Text>
+                                    <Text style={{fontSize:20, color:"#72727d", marginLeft: -8}}> kcal</Text> 
+                                </View>
                             </View>
                             {foods.map((food, i)=>{
                                 if(food.mealType === section.sectionName){
                                     return (
-                                        <View key={i} style={{
-                                            ...styles.food,
-                                            borderBottomColor:
-                                                foods.filter((f)=>f.mealType === section.sectionName)
-                                                    .length-1 === i ? 
-                                                        "white" : 
-                                                        "#eff1f4",
-                                            }}>
+                                        <View key={i} style={styles.food}>
                                              <Image
                                                 style={{
                                                     width: "14%",
@@ -113,7 +106,7 @@ export function MainPage({navigation} : NavigationProps){
                                                     textAlign:"right",
                                                     fontSize:15,
                                                     fontWeight:"500",
-                                                }}>{food.calories} kcal</Text>
+                                                }}>{food.calories}</Text>
                                             </View>
                                         </View>
                                     )
@@ -201,16 +194,19 @@ const styles = StyleSheet.create({
     sectionTitle:{
         fontSize:20,
         color:"#282431",
-        fontWeight:"500",
+        fontWeight:"600",
         marginHorizontal:"5%",
         marginBottom:20,
     },
     sectionKcal:{
+        flexDirection: 'row',
         fontSize:15,
         color:"#282431",
         fontWeight:"500",
         marginHorizontal:"5%",
         marginBottom:0,
+        textAlign:"right",
+        verticalAlign:"center",
     },
     horizontalSplit:{
         width:"100%",
