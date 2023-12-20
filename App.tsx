@@ -14,6 +14,7 @@ import { RootState, store } from './src/state/Store';
 import { MainPage } from './src/views/MainPage';
 import FoodDetail from './src/views/FoodDetail';
 import Search from './src/views/utils/FoodSearch';
+import Profile from './src/views/Profile';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -45,6 +46,36 @@ function App() {
                 ),
               }}>
                 {(props) => <MainPage {...props} />}
+            </Tab.Screen>
+            <Tab.Screen name="Goal" options={{
+                headerShown: false,
+                tabBarLabel: ({ focused, color }) => (
+                  <Text style={{ color: focused ? IconColor : color }}>Goal</Text>
+                ),
+                tabBarIcon: ({ color, size, focused }) => (
+                  <MaterialCommunityIcons
+                    name="chart-line"
+                    color={focused ? IconColor : color}
+                    size={size}
+                  />
+                ),
+              }}>
+                {(props) => <MainPage {...props} />}
+            </Tab.Screen>
+            <Tab.Screen name="Profile" options={{
+                headerShown: false,
+                tabBarLabel: ({ focused, color }) => (
+                  <Text style={{ color: focused ? IconColor : color }}>Profile</Text>
+                ),
+                tabBarIcon: ({ color, size, focused }) => (
+                  <MaterialCommunityIcons
+                    name="account"
+                    color={focused ? IconColor : color}
+                    size={size}
+                  />
+                ),
+              }}>
+                {(props) => <Profile {...props} />}
             </Tab.Screen>
           </Tab.Navigator>
         </NavigationContainer>
