@@ -6,20 +6,22 @@ import { useEffect, useState } from "react";
 import { MaterialCommunityIcons} from '@expo/vector-icons'; 
 import DonutPie from "../shared/components/DonutPie";
 import HorizontalBarChart from "../shared/components/HorizontalBarChart";
-import { Picker } from '@react-native-picker/picker';
 import { useDispatch } from "react-redux";
 import { setCurrentState } from "../state/appStateSlice";
 import { addFood, setScannedOrSearchedFood } from "../state/foodSlice";
+import BackButton from "../shared/components/BackButton";
 
 export default function FoodDetail({navigation} : NavigationProps) {
+    const foods = useSelector((state: RootState) => state.food.food);
     const scannedFood = useSelector((state: RootState) => state.food.scannedOrSearchedFood);
     const dispatch = useDispatch();
 
-    useEffect(()=>{
-    },[scannedFood])
+    const [isInFoods, setIsInFoods] = useState(false);
 
-    const [isPickerOpen, setIsPickerOpen] = useState(false);
-    const [selectedValue, setSelectedValue] = useState('1');
+    useEffect(()=>{
+        foods.includes(scannedFood) ? setIsInFoods(true) : setIsInFoods(false);
+    },[scannedFood,foods])
+
 
     const saveFood =()=>{
         dispatch(setScannedOrSearchedFood(null))
@@ -105,9 +107,6 @@ export default function FoodDetail({navigation} : NavigationProps) {
                         <Text style={styles.actionSectionTitle}>
                             serving
                         </Text>
-                        <TouchableOpacity onPress={() => setIsPickerOpen(true)}>
-                            <Text style={styles.actionSectionTitle}>{selectedValue}</Text>
-                        </TouchableOpacity>
                     </View>
                     <View style={styles.actionSection}>
                         <Text style={styles.actionSectionTitle}>
@@ -117,20 +116,18 @@ export default function FoodDetail({navigation} : NavigationProps) {
                             {scannedFood?.mealType}
                         </Text>
                     </View>
-                    <TouchableOpacity onPress={saveFood} style={{
-                        alignSelf: "flex-end",
-                        marginTop: 10
-                    }}>
-                        <MaterialCommunityIcons name="check-circle-outline" color="#53e38c" size={44}/>
-                    </TouchableOpacity>
+                    {isInFoods == true ? 
+                        <></>
+                        : 
+                        <TouchableOpacity onPress={saveFood} style={{
+                            alignSelf: "flex-end",
+                            marginTop: 10
+                        }}>
+                            <MaterialCommunityIcons name="check-circle-outline" color="#53e38c" size={44}/>
+                        </TouchableOpacity>
+                    }
                 </View>
-                <TouchableOpacity onPress={()=>navigation.goBack()} style={{
-                        position: "absolute",
-                        top: 50,
-                        left: 20,
-                    }}>
-                    <MaterialCommunityIcons name="arrow-left" color="black" size={24}/>
-                </TouchableOpacity>
+                <BackButton/>
             </View>
         )   
     }
@@ -167,6 +164,6 @@ const styles = StyleSheet.create({
     },
     actionSectionTitle: {
         fontSize: 15,
-                            color: "#303d53",
+        color: "#303d53",
     }
 });

@@ -1,6 +1,5 @@
-import { ScrollView, StyleSheet, Text, View ,Dimensions, TouchableHighlight, TouchableOpacity} from 'react-native';
+import { Text, View , TouchableHighlight} from 'react-native';
 import NavigationProps from '../../shared/models/NavigationProp';
-import { MaterialCommunityIcons} from '@expo/vector-icons'; 
 import BackButton from '../../shared/components/BackButton';
 
 
