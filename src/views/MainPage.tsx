@@ -132,6 +132,7 @@ const styles = StyleSheet.create({
         width: Dimensions.get('screen').width,
         backgroundColor:"#fffff9",
         paddingTop:60,
+        minHeight: Dimensions.get('screen').height - 75,
     },
     homeTitle:{
         flexDirection: 'row', 

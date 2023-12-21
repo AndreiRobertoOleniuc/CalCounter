@@ -4,9 +4,10 @@ import { BarCodeScanner } from 'expo-barcode-scanner';
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import { setScannedOrSearchedFood } from '../../state/foodSlice';
-import { RootState } from '../../state/Store'; // import the type of your root state
+import { RootState } from '../../state/Store'; 
 import { Dimensions } from 'react-native';
 import NavigationProps from '../../shared/models/NavigationProp';
+import BackButton from '../../shared/components/BackButton';
 
 const barCodeTypes = [
     BarCodeScanner.Constants.BarCodeType.ean13,
@@ -121,6 +122,15 @@ export default function Scanner({navigation} : NavigationProps) {
               </TouchableOpacity>
           </View>
       </View>
+      <View style={styles.focusBoxTopLeft}>
+      </View>
+      <View style={styles.focusBoxTopRight}>
+      </View>
+      <View style={styles.focusBoxBottomLeft}>
+      </View>
+      <View style={styles.focusBoxBottomRight}>
+      </View>
+      <BackButton color="white"/>
     </ScrollView>
   );
 }
@@ -162,4 +172,52 @@ const styles = StyleSheet.create({
     width: Dimensions.get('screen').width,
     height: Dimensions.get('screen').height - 70,
   },
+  focusBoxTopLeft:{
+    position: "absolute",
+    top: Dimensions.get('screen').height / 2 - 145,
+    left: Dimensions.get('screen').width / 2 - 115,
+    width: 80,
+    height: 80,
+    borderWidth: 4,
+    borderColor: "white",
+    borderRightColor: "transparent",
+    borderBottomColor: "transparent",
+    zIndex: 2,
+  },
+  focusBoxTopRight:{
+    position: "absolute",
+    top: Dimensions.get('screen').height / 2 - 145,
+    left: Dimensions.get('screen').width / 2 + 40,
+    width: 80,
+    height: 80,
+    borderWidth: 4,
+    borderColor: "white",
+    borderLeftColor: "transparent",
+    borderBottomColor: "transparent",
+    zIndex: 2,
+  },
+  focusBoxBottomLeft:{
+    position: "absolute",
+    top: Dimensions.get('screen').height / 2 + 25,
+    left: Dimensions.get('screen').width / 2 - 115,
+    width: 80,
+    height: 80,
+    borderWidth: 4,
+    borderColor: "white",
+    borderRightColor: "transparent",
+    borderTopColor: "transparent",
+    zIndex: 2,
+  },
+  focusBoxBottomRight:{
+    position: "absolute",
+    top: Dimensions.get('screen').height / 2 + 25,
+    left: Dimensions.get('screen').width / 2 + 40,
+    width: 80,
+    height: 80,
+    borderWidth: 4,
+    borderColor: "white",
+    borderLeftColor: "transparent",
+    borderTopColor: "transparent",
+    zIndex: 2,
+  }
 });

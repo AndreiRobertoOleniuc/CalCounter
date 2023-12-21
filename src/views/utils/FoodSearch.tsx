@@ -1,5 +1,8 @@
-import { ScrollView, StyleSheet, Text, View ,Dimensions, TouchableHighlight} from 'react-native';
+import { ScrollView, StyleSheet, Text, View ,Dimensions, TouchableHighlight, TouchableOpacity} from 'react-native';
 import NavigationProps from '../../shared/models/NavigationProp';
+import { MaterialCommunityIcons} from '@expo/vector-icons'; 
+import BackButton from '../../shared/components/BackButton';
+
 
 export default function Search({navigation} : NavigationProps) {
     return (
@@ -12,6 +15,8 @@ export default function Search({navigation} : NavigationProps) {
             <TouchableHighlight onPress={() => navigation.navigate("Scanner")}>
                 <Text>Scanner</Text>
             </TouchableHighlight>
+
+            <BackButton/>
         </View>
     );
 }
