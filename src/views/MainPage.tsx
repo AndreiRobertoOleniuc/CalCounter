@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, Text, View ,Dimensions, TouchableHighlight, Image} from 'react-native';
+import { ScrollView, StyleSheet, Text, View ,Dimensions, TouchableHighlight, Image, TouchableOpacity} from 'react-native';
 
 import { MaterialCommunityIcons} from '@expo/vector-icons'; 
 import { useDispatch, useSelector } from "react-redux";
@@ -47,6 +47,13 @@ export function MainPage({navigation} : NavigationProps){
         })
         return kcal;
     }
+
+    const goToDetailPage = (id: number) =>{
+        const food = foods[id];
+        dispatch(setScannedOrSearchedFood(food));
+        dispatch(setUtilsPage("Details"))
+        dispatch(setCurrentState("UTILS"));
+    }
     return (
         <ScrollView>
             <View style={styles.home}>
@@ -71,44 +78,46 @@ export function MainPage({navigation} : NavigationProps){
                             {foods.map((food, i)=>{
                                 if(food.mealType === section.sectionName){
                                     return (
-                                        <View key={i} style={styles.food}>
-                                             <Image
-                                                style={{
-                                                    width: "14%",
-                                                    aspectRatio: 1,
-                                                    borderRadius: 10,
-                                                    marginRight:10,
-                                                }}
-                                                source={{
-                                                uri: food?.image,
-                                                }}
-                                            />
-                                            <View style={{
-                                                flexDirection: "row",
-                                                justifyContent:"space-between",
-                                                alignItems:"center",
-                                                width:"80%",
-                                            }}>
-                                                <View style={{width: "60%"}}>
+                                        <TouchableOpacity onPress={()=>{goToDetailPage(i)}}>
+                                            <View key={i} style={styles.food}>
+                                                <Image
+                                                    style={{
+                                                        width: "14%",
+                                                        aspectRatio: 1,
+                                                        borderRadius: 10,
+                                                        marginRight:10,
+                                                    }}
+                                                    source={{
+                                                    uri: food?.image,
+                                                    }}
+                                                />
+                                                <View style={{
+                                                    flexDirection: "row",
+                                                    justifyContent:"space-between",
+                                                    alignItems:"center",
+                                                    width:"80%",
+                                                }}>
+                                                    <View style={{width: "60%"}}>
+                                                        <Text style={{
+                                                            width: "100%",
+                                                            fontSize:15,
+                                                            fontWeight:"600",
+                                                        }}>{food.name}</Text>
+                                                        <Text style={{
+                                                            width: "100%",
+                                                            fontSize:12,
+                                                            color:"#a3a2b5",
+                                                        }}>{food.brand}</Text>
+                                                    </View>
                                                     <Text style={{
-                                                        width: "100%",
+                                                        width: "20%",
+                                                        textAlign:"right",
                                                         fontSize:15,
-                                                        fontWeight:"600",
-                                                    }}>{food.name}</Text>
-                                                    <Text style={{
-                                                        width: "100%",
-                                                        fontSize:12,
-                                                        color:"#a3a2b5",
-                                                    }}>{food.brand}</Text>
+                                                        fontWeight:"500",
+                                                    }}>{food.calories}</Text>
                                                 </View>
-                                                <Text style={{
-                                                    width: "20%",
-                                                    textAlign:"right",
-                                                    fontSize:15,
-                                                    fontWeight:"500",
-                                                }}>{food.calories}</Text>
                                             </View>
-                                        </View>
+                                        </TouchableOpacity>
                                     )
                                 }
                             })}
