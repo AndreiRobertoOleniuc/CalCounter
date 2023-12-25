@@ -4,10 +4,10 @@ import { BarCodeScanner } from 'expo-barcode-scanner';
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import { setScannedOrSearchedFood } from '../../state/foodSlice';
-import { RootState } from '../../state/Store'; 
 import { Dimensions } from 'react-native';
 import NavigationProps from '../../shared/models/NavigationProp';
 import BackButton from '../../shared/components/BackButton';
+import { RootState } from '../../state/Store';
 
 const barCodeTypes = [
     BarCodeScanner.Constants.BarCodeType.ean13,
@@ -27,9 +27,7 @@ const barCodeTypes = [
     BarCodeScanner.Constants.BarCodeType.upc_ean,
     BarCodeScanner.Constants.BarCodeType.codabar,
 ];
-//4011100005846 test barcode M&M
-//90331701 test barcode Shokata
-//4063367394072 test barcode Chips
+
 export default function Scanner({navigation} : NavigationProps) {
   const [hasPermission, setHasPermission] = useState(null);
   const [product, setProduct] = useState(null);

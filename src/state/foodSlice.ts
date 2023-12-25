@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { Food } from "../shared/models/Food";
+import { RootState } from "./Store";
 
 const initialState = {
   food: [] as Food[],
@@ -24,5 +25,9 @@ export const foodSlice = createSlice({
 
 export const { addFood, deleteFood, setScannedOrSearchedFood } =
   foodSlice.actions;
+
+export const selectFoods = (state: RootState) => state.food.food;
+export const selectScannedOrSearchedFood = (state: RootState) =>
+  state.food.scannedOrSearchedFood;
 
 export default foodSlice.reducer;

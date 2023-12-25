@@ -18,7 +18,15 @@ import Profile from './src/views/Profile';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
-const IconColor ="#303d53";
+const IconColor ="#fff";
+
+export default function AppWithStore() {
+  return (
+    <Provider store={store}>
+      <App />
+    </Provider>
+  );
+}
 
 function App() {
   const currentState = useSelector((state: RootState) => state.appState.currentState);
@@ -31,7 +39,14 @@ function App() {
     case "HOME":
       return (
         <NavigationContainer>
-          <Tab.Navigator>
+          <Tab.Navigator
+          screenOptions={{
+            tabBarStyle: { 
+              position: 'absolute',
+              backgroundColor: 'rgba(0, 0, 0, 0.8)',
+              borderTopColor: 'transparent',
+            },
+          }}>
             <Tab.Screen name="Home" options={{
                 headerShown: false,
                 tabBarLabel: ({ focused, color }) => (
@@ -118,13 +133,4 @@ function App() {
         </NavigationContainer>
       )
   }
-}
-
-
-export default function AppWithStore() {
-  return (
-    <Provider store={store}>
-      <App />
-    </Provider>
-  );
 }
