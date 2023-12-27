@@ -5,7 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Provider, useSelector } from 'react-redux';
 import { MaterialCommunityIcons} from '@expo/vector-icons'; 
-import { Text } from 'react-native';
+import { Text,View } from 'react-native';
 
 import Login from './src/views/auth/Login';
 import Register from './src/views/auth/Register';
@@ -15,6 +15,7 @@ import { MainPage } from './src/views/MainPage';
 import FoodDetail from './src/views/FoodDetail';
 import Search from './src/views/utils/FoodSearch';
 import Profile from './src/views/Profile';
+import { NativeWindStyleSheet } from "nativewind";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -134,3 +135,7 @@ function App() {
       )
   }
 }
+
+NativeWindStyleSheet.setOutput({
+  default: "native",
+});

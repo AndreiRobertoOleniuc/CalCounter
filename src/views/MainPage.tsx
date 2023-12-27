@@ -7,6 +7,7 @@ import { setCurrentState, setUtilsPage } from "../state/appStateSlice";
 import { RootState } from "../state/Store";
 import NavigationProps from "../shared/models/NavigationProp";
 import { setScannedOrSearchedFood } from '../state/foodSlice';
+import { NativeWindStyleSheet } from "nativewind";
 
 
 export function MainPage({navigation} : NavigationProps){
@@ -237,3 +238,8 @@ const styles = StyleSheet.create({
         paddingBottom:10
     }
 });
+
+
+NativeWindStyleSheet.setOutput({
+    default: "native",
+  });
