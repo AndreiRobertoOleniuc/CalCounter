@@ -5,7 +5,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Provider, useSelector } from 'react-redux';
 import { MaterialCommunityIcons} from '@expo/vector-icons'; 
-import { Text,View } from 'react-native';
+import { Text } from 'react-native';
+import { useColorScheme } from "nativewind";
 
 import Login from './src/views/auth/Login';
 import Register from './src/views/auth/Register';
@@ -19,7 +20,6 @@ import { NativeWindStyleSheet } from "nativewind";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
-const IconColor ="#fff";
 
 export default function AppWithStore() {
   return (
@@ -30,11 +30,18 @@ export default function AppWithStore() {
 }
 
 function App() {
+  const { colorScheme } = useColorScheme();
   const currentState = useSelector((state: RootState) => state.appState.currentState);
   const utilSector = useSelector((state: RootState) => state.appState.utilsPage);
 
   useEffect(() => {
   }, [currentState,utilSector]);
+
+  const IconColor = (focused: boolean, color: any) =>{
+    return colorScheme === 'dark' ? 
+      focused ? '#fff' : color :
+      focused ? '#000' : color;
+  }
 
   switch (currentState) {
     case "HOME":
@@ -44,34 +51,19 @@ function App() {
           screenOptions={{
             tabBarStyle: { 
               position: 'absolute',
-              backgroundColor: 'rgba(0, 0, 0, 0.8)',
+              backgroundColor: colorScheme == 'dark' ? 'rgba(31, 41, 55, 1)' : 'rgba(255, 255, 255, 1)',
               borderTopColor: 'transparent',
             },
           }}>
             <Tab.Screen name="Home" options={{
                 headerShown: false,
                 tabBarLabel: ({ focused, color }) => (
-                  <Text style={{ color: focused ? IconColor : color }}>Home</Text>
+                  <Text style={{ color: IconColor(focused,color) }}>Home</Text>
                 ),
                 tabBarIcon: ({ color, size, focused }) => (
                   <MaterialCommunityIcons
                     name="home"
-                    color={focused ? IconColor : color}
-                    size={size}
-                  />
-                ),
-              }}>
-                {(props) => <MainPage {...props} />}
-            </Tab.Screen>
-            <Tab.Screen name="Goal" options={{
-                headerShown: false,
-                tabBarLabel: ({ focused, color }) => (
-                  <Text style={{ color: focused ? IconColor : color }}>Goal</Text>
-                ),
-                tabBarIcon: ({ color, size, focused }) => (
-                  <MaterialCommunityIcons
-                    name="chart-line"
-                    color={focused ? IconColor : color}
+                    color={IconColor(focused,color)}
                     size={size}
                   />
                 ),
@@ -81,12 +73,12 @@ function App() {
             <Tab.Screen name="Profile" options={{
                 headerShown: false,
                 tabBarLabel: ({ focused, color }) => (
-                  <Text style={{ color: focused ? IconColor : color }}>Profile</Text>
+                  <Text style={{ color: IconColor(focused,color) }}>Profile</Text>
                 ),
                 tabBarIcon: ({ color, size, focused }) => (
                   <MaterialCommunityIcons
                     name="account"
-                    color={focused ? IconColor : color}
+                    color={IconColor(focused,color)}
                     size={size}
                   />
                 ),

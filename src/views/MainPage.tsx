@@ -1,7 +1,8 @@
-import { ScrollView, StyleSheet, Text, View ,Dimensions, TouchableHighlight, Image, TouchableOpacity} from 'react-native';
+import { ScrollView, Text, View, TouchableHighlight, Image, TouchableOpacity} from 'react-native';
 
 import { MaterialCommunityIcons} from '@expo/vector-icons'; 
 import { useDispatch, useSelector } from "react-redux";
+import { useColorScheme } from "nativewind";
 
 import { setCurrentState, setUtilsPage } from "../state/appStateSlice";
 import { RootState } from "../state/Store";
@@ -11,6 +12,7 @@ import { NativeWindStyleSheet } from "nativewind";
 
 
 export function MainPage({navigation} : NavigationProps){
+    const { colorScheme } = useColorScheme();
     const dispatch = useDispatch();
     const foods = useSelector((state: RootState) => state.food.food);
 
@@ -55,79 +57,65 @@ export function MainPage({navigation} : NavigationProps){
         dispatch(setUtilsPage("Details"))
         dispatch(setCurrentState("UTILS"));
     }
+
+    const isDarkMode = () => {
+        return colorScheme === 'dark';
+      }
     return (
-        <ScrollView>
-            <View style={styles.home}>
-                <View style={styles.homeTitle}>
-                    <Text style={styles.titleDiary}>Diary</Text>
-                    <Text style={styles.titleDate}>today</Text>
-                    <MaterialCommunityIcons name="menu-down" color="black" size={24} />
+        <ScrollView className={`${isDarkMode() ? "bg-slate-800 ": "bg-slate-100 "}`}>
+            <View className={`w-full pt-16 ${isDarkMode() ? "bg-slate-800 ": "bg-slate-100 "}`}>
+                <View className={`flex-row ml-5 items-center`}>
+                    <Text className={`text-3xl font-bold mr-2 ${isDarkMode() ?  'text-slate-100' :'text-slate-800'}`}>Diary</Text>
+                    <Text className={`text-3xl mr-2 ${isDarkMode() ?  'text-slate-400' :'text-slate-800'}`}>today</Text>
+                    <MaterialCommunityIcons name="menu-down" color={isDarkMode() ? "white": "black"} size={24} />
                 </View>
-                <View style={styles.calorieDashboard}></View>
+                <View className={`w-11/12 h-40 self-center mt-6 mb-8 rounded-md ${isDarkMode() ?  'bg-slate-700' :'bg-slate-400'}`}></View>
                 {sections.map((section, i)=>{
                     return (
-                        <View style={styles.foodSection} key={i}>
-                            <View style={styles.sectionHeader}>
-                                <Text style={styles.sectionTitle}>
+                        <View className={`mb-6`} key={i}>
+                            <View className={`flex-row justify-between`}>
+                                <Text className={`text-lg font-semibold ml-5 mb-5 ${isDarkMode() ?  'text-slate-200' :'text-slate-800'}`}>
                                     {section.sectionName}
                                 </Text>
-                                <View style={styles.sectionKcal}>
-                                    <Text style={{fontSize:20, fontWeight:"600"}}>{getSectionKcal(section.sectionName)} </Text>
-                                    <Text style={{fontSize:20, color:"#72727d", marginLeft: -8}}> kcal</Text> 
+                                <View className={`flex-row mr-5`}>
+                                    <Text className={`text-lg font-semibold ${isDarkMode() ?  'text-slate-200' :'text-slate-800'}`}>{getSectionKcal(section.sectionName)} </Text>
+                                    <Text className={`text-lg font-light ${isDarkMode() ?  'text-slate-200' :'text-slate-800'}`}> kcal</Text> 
                                 </View>
                             </View>
                             {foods.map((food, i)=>{
                                 if(food.mealType === section.sectionName){
                                     return (
                                         <TouchableOpacity onPress={()=>{goToDetailPage(i)}}>
-                                            <View key={i} style={styles.food}>
+                                            <View key={i} className={`mr-5 ml-5 mb-5 flex-row justify-between pb-2`}>
                                                 <Image
                                                     style={{
                                                         width: "14%",
                                                         aspectRatio: 1,
                                                         borderRadius: 10,
                                                         marginRight:10,
-                                                    }}
+                                                    }} 
                                                     source={{
-                                                    uri: food?.image,
+                                                        uri: food?.image,
                                                     }}
                                                 />
-                                                <View style={{
-                                                    flexDirection: "row",
-                                                    justifyContent:"space-between",
-                                                    alignItems:"center",
-                                                    width:"80%",
-                                                }}>
-                                                    <View style={{width: "60%"}}>
-                                                        <Text style={{
-                                                            width: "100%",
-                                                            fontSize:15,
-                                                            fontWeight:"600",
-                                                        }}>{food.name}</Text>
-                                                        <Text style={{
-                                                            width: "100%",
-                                                            fontSize:12,
-                                                            color:"#a3a2b5",
-                                                        }}>{food.brand}</Text>
+                                                <View className={`flex-row justify-between items-center w-4/5`}>
+                                                    <View className='w-3/5'>
+                                                        <Text className={`w-full font-semibold text-base ${isDarkMode() ?  'text-slate-200' :'text-slate-800'}`}>{food.name}</Text>
+                                                        <Text className={`text-xs w-full text-slate-400`}>{food.brand}</Text>
                                                     </View>
-                                                    <Text style={{
-                                                        width: "20%",
-                                                        textAlign:"right",
-                                                        fontSize:15,
-                                                        fontWeight:"500",
-                                                    }}>{food.calories}</Text>
+                                                    <Text className={`w-1/5 text-right text-base font-medium ${isDarkMode() ?  'text-slate-200' :'text-slate-800'}`}>{food.calories}</Text>
                                                 </View>
                                             </View>
                                         </TouchableOpacity>
                                     )
                                 }
                             })}
-                            <View style={styles.add}>
-                                <View style={styles.horizonalSplit1} />
-                                <TouchableHighlight  underlayColor="#edc793" style={styles.addFood} onPress={()=>addFood(section.sectionName)}>
-                                    <Text style={styles.addFoodIcon}>+</Text>
+                            <View className={`flex-row items-center`}>
+                                <View className={`h-0.5 w-5 ${isDarkMode() ? 'bg-slate-700' : 'bg-slate-300'}`} />
+                                <TouchableHighlight  underlayColor="#edc793" className={`w-12 h-7 bg-orange-300 items-center rounded-lg`} onPress={()=>addFood(section.sectionName)}>
+                                    <Text className={`font-bold text-lg text-white`}>+</Text>
                                 </TouchableHighlight>
-                                <View style={styles.horizonalSplit2} />
+                                <View className={`h-0.5 w-5/6 ${isDarkMode() ? 'bg-slate-700' : 'bg-slate-300'}`} />
                             </View>
                         </View>
                     )
@@ -136,109 +124,6 @@ export function MainPage({navigation} : NavigationProps){
         </ScrollView>
     )
 }
-
-const styles = StyleSheet.create({
-    home:{
-        width: Dimensions.get('screen').width,
-        backgroundColor:"#fffff9",
-        paddingTop:60,
-        minHeight: Dimensions.get('screen').height - 75,
-    },
-    homeTitle:{
-        flexDirection: 'row', 
-        marginHorizontal:"5%",
-        alignItems:"center",        
-    },
-    titleDiary:{
-        fontSize:30,
-        color:"#211d2b",
-        fontWeight:"bold",
-        marginRight:10,
-    },
-    titleDate:{
-        fontSize:30,
-        color:"#282431",
-    },
-    calorieDashboard:{
-        width: "92%",
-        height: 200,
-        backgroundColor:"#303d53",
-        alignSelf: "center",
-        marginTop: 20,
-        borderRadius:10,
-        marginBottom:20,
-    },
-    foodSection:{
-        marginBottom:30,
-    },
-    add:{
-        flexDirection: 'row', 
-        alignItems: 'center'
-    },
-    addFood:{
-        width: 50,
-        height: 35,
-        alignItems:"center",
-        justifyContent:"center",
-        backgroundColor:"#f5ce98",
-        borderRadius:12,
-    },
-    addFoodIcon:{
-        color:"#fefbf7",
-        fontWeight:"bold",  
-        fontSize:25,
-    },
-    horizonalSplit1:{
-        flex: 1, 
-        height: 2, 
-        backgroundColor: '#eff0f5'
-    },
-    horizonalSplit2:{
-        flex: 17, 
-        height: 2, 
-        backgroundColor: '#eff0f5'
-    },
-    sectionHeader:{
-        flexDirection: 'row', 
-        justifyContent:"space-between",
-    },
-    sectionTitle:{
-        fontSize:20,
-        color:"#282431",
-        fontWeight:"600",
-        marginHorizontal:"5%",
-        marginBottom:20,
-    },
-    sectionKcal:{
-        flexDirection: 'row',
-        fontSize:15,
-        color:"#282431",
-        fontWeight:"500",
-        marginHorizontal:"5%",
-        marginBottom:0,
-        textAlign:"right",
-        verticalAlign:"center",
-    },
-    horizontalSplit:{
-        width:"100%",
-        height:1,
-        backgroundColor:"#eff1f4",
-        marginTop:-25,
-        marginBottom:40,
-    },
-    food: {
-        color:"#282431",
-        marginHorizontal:"5%",
-        flexDirection: 'row',
-        justifyContent:"space-between",
-        alignItems:"center",   
-        marginBottom:12,
-        borderColor: "white",
-        borderWidth:1,
-        paddingBottom:10
-    }
-});
-
 
 NativeWindStyleSheet.setOutput({
     default: "native",

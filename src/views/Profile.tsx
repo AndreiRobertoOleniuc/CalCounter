@@ -1,39 +1,49 @@
 import React, { useEffect } from 'react';
-import { Pressable, Text, View } from "react-native"
+import { Text, View, Image, Switch } from "react-native"
 import { useColorScheme } from "nativewind";
 import NavigationProps from '../shared/models/NavigationProp';
 import { MaterialCommunityIcons} from '@expo/vector-icons'; 
 
-import { styled } from "nativewind";
 import { useSelector } from 'react-redux';
 import { selectUser } from '../state/userSlice';
+import { User } from '../shared/models/User';
 
-const StyledPressable = styled(Pressable)
-const StyledText = styled(Text)
-const StyledView = styled(View)
 
-function Profile({ navigation }: NavigationProps) {
+export default function Profile({ navigation }: NavigationProps) {
   const { colorScheme, toggleColorScheme } = useColorScheme();
-  const user = useSelector(selectUser);
+  const user: User = useSelector(selectUser);
   useEffect(() => {
-    console.log(user);
-  }, [user]);
+  }, [user, colorScheme]);
+
+  const isDarkMode = () => {
+    return colorScheme === 'dark';
+  }
   return (
-    <StyledView className="w-full h-full dark:bg-slate-800 pt-20 flex items-center">
-      <StyledView className="w-11/12 bg-slate-200 dark:bg-slate-600 rounded-lg shadow-sm p-5 mb-10 flex-row justify-between">
-        <StyledView className="w-20 h-20 bg-slate-600 dark:bg-slate-300 rounded-full"/>
-        <StyledText className='text-2xl font-bold text-slate-800 dark:text-slate-100 mr-20'>{user.firstName}</StyledText>
+    <View className={`w-full h-full ${isDarkMode() ? "bg-slate-800 ": "bg-slate-100 "}pt-20 flex items-center`}>
+      <View className={`w-11/12  ${isDarkMode() ? "bg-slate-600  ": "bg-slate-300 "}rounded-lg shadow-sm p-5 mb-10 flex-row justify-between`}>
+        <Image source={{uri: user?.img,}} className="w-20 h-20 rounded-full"/>
+        <View className='mr-10 flex-col'>
+          <Text className={`text-2xl font-bold ${isDarkMode() ?  'text-slate-100' :'text-slate-800'} `}>
+            {user.firstName}
+          </Text>
+          <Text className={`text-sm font-light ${isDarkMode() ? 'text-slate-100' : 'text-slate-800'}`}>
+            {user.weight} kg - {user.height} cm
+          </Text>
+        </View>
         <MaterialCommunityIcons name="cog-outline" color={colorScheme == 'dark' ? 'white': 'black'} size={24}/>
-      </StyledView>
+      </View>
+
       
-      <StyledPressable
-      onPress={toggleColorScheme}
-      className=""
-      >
-        <MaterialCommunityIcons name="theme-light-dark" color={colorScheme == 'dark' ? 'white': 'black'} size={24}/>
-      </StyledPressable>
-    </StyledView>
+      <Switch
+        value={isDarkMode()}
+        onValueChange={toggleColorScheme}
+        trackColor={{ false: "#767577", true: "#81b0ff" }}
+        thumbColor={isDarkMode() ? "#f5dd4b" : "#f4f3f4"}
+        className=""
+      />
+      <Text className={`text-2xl font-bold mt-5 ${isDarkMode() ?  'text-slate-100' :'text-slate-800'} `}>
+        Dark Mode
+      </Text>
+    </View>
   );
 }
-
-export default Profile;
