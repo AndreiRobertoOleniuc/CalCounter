@@ -7,11 +7,7 @@ export default function BackButton({color = "black"}) {
     const dispatch = useDispatch();
 
     return (
-        <TouchableOpacity onPress={()=>dispatch(setCurrentState("HOME"))} style={{
-            position: "absolute",
-            top: 50,
-            left: 20,
-        }}>
+        <TouchableOpacity onPress={()=>dispatch(setCurrentState("HOME"))} className="absolute top-12 left-5 ">
             <MaterialCommunityIcons name="arrow-left" color={color} size={24}/>
         </TouchableOpacity>
     )
