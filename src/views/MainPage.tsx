@@ -63,7 +63,7 @@ export function MainPage({navigation} : NavigationProps){
       }
     return (
         <ScrollView className={`${isDarkMode() ? "bg-slate-800 ": "bg-slate-100 "}`}>
-            <View className={`w-full pt-16 ${isDarkMode() ? "bg-slate-800 ": "bg-slate-100 "}`}>
+            <View className={`w-full pb-20 pt-16 ${isDarkMode() ? "bg-slate-800 ": "bg-slate-100 "}`}>
                 <View className={`flex-row ml-5 items-center`}>
                     <Text className={`text-3xl font-bold mr-2 ${isDarkMode() ?  'text-slate-100' :'text-slate-800'}`}>Diary</Text>
                     <Text className={`text-3xl mr-2 ${isDarkMode() ?  'text-slate-400' :'text-slate-800'}`}>today</Text>
@@ -85,8 +85,8 @@ export function MainPage({navigation} : NavigationProps){
                             {foods.map((food, i)=>{
                                 if(food.mealType === section.sectionName){
                                     return (
-                                        <TouchableOpacity onPress={()=>{goToDetailPage(i)}}>
-                                            <View key={i} className={`mr-5 ml-5 mb-5 flex-row justify-between pb-2`}>
+                                        <TouchableOpacity key={i} onPress={()=>{goToDetailPage(i)}}>
+                                            <View  className={`mr-5 ml-5 mb-5 flex-row justify-between pb-2`}>
                                                 <Image
                                                     style={{
                                                         width: "14%",
