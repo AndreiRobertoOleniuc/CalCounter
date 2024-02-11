@@ -1,4 +1,4 @@
-# Cal Counter
+# Cal Counter (Frontend)
 
 The goal of this mobile app is to allow a User to track their Nurtition Values and Calories to achieve a better lifestyle.
 
